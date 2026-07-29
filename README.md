@@ -1,4 +1,4 @@
-# 🐉 Escalamiento de Privilegios — Guía Interactiva
+# 🐉 Escalamiento de Privilegios: Guía Interactiva
 
 Una guía web interactiva, autocontenida y lista para desplegar en **Cloudflare Pages**. Incluye simulador CTF, quiz, cheatsheet de comandos y técnicas de post-explotación.
 
