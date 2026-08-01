@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mitigación de Escalamiento de Privilegios — Guía Defensiva</title>
+  <style>
+    :root {
+      --bg: #0f0f0f; --surface: #1a1a1a; --surface-2: #242424; --border: #333;
+      --text-primary: #f5f5f5; --text-secondary: #a0a0a0; --text-tertiary: #666;
+      --accent: #00d4aa; --danger: #ff6b6b; --warning: #f5a623; --positive: #00d4aa;
+      --chart-1: #4dabf7; --chart-2: #ff6b6b; --chart-3: #51cf66; --chart-4: #be4bdb;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: "SF Mono", "Fira Code", Consolas, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-sans); background: var(--bg); color: var(--text-primary); line-height: 1.6; min-height: 100vh; }
+    .container { max-width: 800px; margin: 0 auto; padding: 24px 16px; }
+    .header { text-align: center; margin-bottom: 28px; padding: 24px 0; border-bottom: 1px solid var(--border); }
+    .header h1 { font-size: 26px; font-weight: 800; }
+    .header p { margin-top: 8px; color: var(--text-secondary); font-size: 14px; }
+    .nav { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+    .nav a { color: var(--text-secondary); text-decoration: none; font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border); transition: all 0.15s; }
+    .nav a:hover { color: var(--text-primary); background: var(--surface); border-color: var(--accent); }
+    .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 20px; overflow-x: auto; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab { padding: 10px 16px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--text-tertiary); white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.15s; font-family: inherit; }
+    .tab:hover { color: var(--text-secondary); }
+    .tab.active { color: var(--text-primary); border-bottom-color: var(--accent); }
+    .panel { display: none; animation: fadeIn 0.25s ease; }
+    .panel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .card { border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 12px; background: var(--surface); }
+    .card-title { font-weight: 700; font-size: 15px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+    .card-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+    .card code { font-family: var(--font-mono); background: var(--surface-2); padding: 2px 6px; border-radius: 4px; font-size: 12px; color: var(--accent); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+    .terminal { background: #080808; border-radius: 10px; padding: 16px; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.7; overflow-x: auto; margin: 12px 0; border: 1px solid #1a1a1a; }
+    .terminal .cmd { color: #e0e0e0; }
+    .terminal .out { color: #888; }
+    .terminal .root { color: var(--danger); font-weight: 600; }
+    .terminal .comment { color: #555; font-style: italic; }
+    .accordion { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 10px; background: var(--surface); }
+    .acc-header { padding: 14px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 13.5px; background: transparent; transition: background 0.15s; user-select: none; }
+    .acc-header:hover { background: var(--surface-2); }
+    .acc-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; padding: 0 16px; }
+    .acc-body.open { max-height: 800px; padding: 0 16px 16px; }
+    .acc-icon { transition: transform 0.25s; color: var(--text-tertiary); font-size: 11px; }
+    .acc-header.open .acc-icon { transform: rotate(180deg); }
+    .badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid var(--border); }
+    .badge-green { background: rgba(0,212,170,0.12); color: var(--positive); border-color: rgba(0,212,170,0.3); }
+    .badge-orange { background: rgba(245,166,35,0.12); color: var(--warning); border-color: rgba(245,166,35,0.3); }
+    .badge-red { background: rgba(255,107,107,0.12); color: var(--danger); border-color: rgba(255,107,107,0.3); }
+    .badge-blue { background: rgba(77,171,247,0.12); color: var(--chart-1); border-color: rgba(77,171,247,0.3); }
+    .num-list { list-style: none; padding: 0; }
+    .num-list li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; display: flex; align-items: flex-start; gap: 10px; }
+    .num-list li:last-child { border-bottom: none; }
+    .num-list .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--text-tertiary); min-width: 24px; font-weight: 600; }
+    .footer { text-align: center; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-tertiary); font-size: 12px; }
+    .footer a { color: var(--accent); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #444; }
+    .checklist-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; font-size: 14px; cursor: pointer; border-bottom: 1px solid var(--border); }
+    .checklist-item:last-child { border-bottom: none; }
+    .checklist-item input { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; margin-top: 2px; }
+    .checklist-item.checked { text-decoration: line-through; color: var(--text-tertiary); }
+    .severity { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+    .sev-high { background: var(--danger); }
+    .sev-med { background: var(--warning); }
+    .sev-low { background: var(--positive); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🛡️ Mitigación de Escalamiento de Privilegios</h1>
+      <p>Guía defensiva: cómo proteger Linux y Windows contra post-explotación</p>
+    </div>
+
+    <div class="nav">
+      <a href="index.html">🏠 Inicio</a>
+      <a href="index.html">🐧 Linux</a>
+      <a href="windows-privesc.html">🪟 Windows</a>
+      <a href="mitigation.html">🛡️ Mitigación</a>
+      <a href="labs.html">🧪 Laboratorios</a>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('linux')">🐧 Linux</button>
+      <button class="tab" onclick="switchTab('windows')">🪟 Windows</button>
+      <button class="tab" onclick="switchTab('general')">📋 General</button>
+      <button class="tab" onclick="switchTab('checklist')">✅ Checklist</button>
+    </div>
+
+    <!-- LINUX MITIGATION -->
+    <div id="linux" class="panel active">
+      <div class="card">
+        <div class="card-title">🐧 Mitigaciones en Linux</div>
+        <div class="card-desc">Cada vector de ataque tiene una contramedida. Implementa estas configuraciones para reducir drásticamente la superficie de ataque.</div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span><span class="severity sev-high"></span>Configuración de Sudo</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="card-desc">Restringe sudo al mínimo indispensable. Evita <code>NOPASSWD</code> y usa reglas granulares.</div>
+          <div class="terminal">
+<span class="cmd"># /etc/sudoers — usar visudo para editar</span>
+<span class="cmd">Defaults    env_reset, timestamp_timeout=5</span>
+<span class="cmd">Defaults    logfile="/var/log/sudo.log"</span>
+<span class="cmd">%admin ALL=(ALL:ALL) ALL</span>
+<span class="comment"># NUNCA: usuario ALL=(ALL) NOPASSWD: ALL</span>
+<span class="comment"># NUNCA: usuario ALL=(root) NOPASSWD: /bin/bash</span>
+          </div>
+          <div class="card-desc" style="margin-top:10px"><strong>Acciones:</strong> Audita <code>/etc/sudoers</code> y <code>/etc/sudoers.d/*</code> regularmente. Elimina reglas NOPASSWD innecesarias.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span><span class="severity sev-high"></span>Binarios SUID/SGID</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="card-desc">Minimiza los binarios con bit SUID. Usa capabilities granulares en su lugar.</div>
+          <div class="terminal">
+<span class="cmd"># Buscar todos los SUID</span>
+<span class="cmd">$ find / -perm -4000 -type f 2>/dev/null</span>
+<span class="cmd"># Eliminar SUID innecesario</span>
+<span class="cmd">$ chmod u-s /usr/bin/some_binary</span>
+<span class="cmd"># Reemplazar por capability específica</span>
+<span class="cmd">$ setcap cap_net_bind_service=ep /usr/bin/myapp</span>
+          </div>
+          <div class="card-desc" style="margin-top:10px"><strong>Acciones:</strong> Revisa mensualmente. Elimina SUID de binarios que no lo necesiten. Usa AppArmor/SELinux para restringir.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span><span class="severity sev-med"></span>Kernel y Parches</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="card-desc">Mantén el kernel actualizado. Los exploits de kernel son comunes en CTFs y entornos desactualizados.</div>
+          <div class="terminal">
+<span class="cmd">$ sudo apt update && sudo apt upgrade -y</span>
+<span class="cmd">$ sudo apt install unattended-upgrades</span>
+<span class="cmd">$ sudo dpkg-reconfigure -plow unattended-upgrades</span>
+<span class="cmd">$ sudo reboot</span>
+          </div>
+          <div class="card-desc" style="margin-top:10px"><strong>Acciones:</strong> Activa actualizaciones automáticas de seguridad. Monitorea CVEs del kernel con <code>linux-exploit-suggester</code> en modo defensivo.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span><span class="severity sev-med"></span>Permisos de Archivos Críticos</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="terminal">
+<span class="cmd">$ ls -la /etc/passwd /etc/shadow /etc/sudoers</span>
+<span class="out">-rw-r--r-- 1 root root  /etc/passwd
+-rw-r----- 1 root shadow /etc/shadow
+-r--r----- 1 root root   /etc/sudoers</span>
+<span class="cmd">$ chmod 644 /etc/passwd</span>
+<span class="cmd">$ chmod 640 /etc/shadow</span>
+<span class="cmd">$ chmod 440 /etc/sudoers</span>
+<span class="cmd">$ chown root:root /etc/passwd /etc/shadow /etc/sudoers</span>
+          </div>
+          <div class="card-desc" style="margin-top:10px"><strong>Acciones:</strong> Audita permisos de <code>/etc/passwd</code>, <code>/etc/shadow</code>, <code>/etc/sudoers</code>, cron scripts, y directorios en <code>PATH</code>.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span><span class="severity sev-high"></span>Docker y Contenedores</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="card-desc">Nunca des grupo docker a usuarios no administradores. Es equivalente a root.</div>
+          <div class="terminal">
+<span class="cmd">$ gpasswd -d usuario docker</span>
+<span class="cmd">$ chmod 660 /var/run/docker.sock</span>
+<span class="cmd">$ chown root:docker /var/run/docker.sock</span>
+<span class="comment"># En Dockerfiles, NUNCA correr como root:</span>
+<span class="cmd">USER 1000:1000</span>
+          </div>
+          <div class="card-desc" style="margin-top:10px"><strong>Acciones:</strong> Usa rootless Docker. Restringe el socket. Audita membresías del grupo docker.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WINDOWS MITIGATION -->
+    <div id="windows" class="panel">
+      <div class="card">
+        <div class="card-title">🪟 Mitigaciones en Windows</div>
+        <div class="card-desc">Windows tiene vectores únicos. Estas configuraciones reducen la superficie de ataque significativamente.</div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span><span class="severity sev-high"></span>Privilegios de Usuario</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="card-desc">Restringe privilegios peligrosos como SeImpersonatePrivilege para cuentas de servicio no confiables.</div>
+          <div class="terminal">
+<span class="cmd">PS C:\> Get-LocalUser | Where-Object {$_.Enabled -eq $true}</span>
+<span class="cmd">PS C:\> Get-LocalGroupMember -Group "Administrators"</span>
+<span class="cmd">PS C:\> whoami /priv</span>
+<span class="comment"># Remover SeImpersonatePrivilege de cuentas de servicio innecesarias</span>
+<span class="cmd">PS C:\> secedit /export /cfg C:\security.cfg</span>
+          </div>
+          <div class="card-desc" style="margin-top:10px"><strong>Acciones:</strong> Principio de mínimo privilegio. Usa Managed Service Accounts (gMSA) para servicios. Audita privilegios con <code>accesschk.exe</code>.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span><span class="severity sev-high"></span>Servicios: Rutas con Comillas</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="card-desc">Todas las rutas de servicios deben estar entre comillas dobles para prevenir Unquoted Service Path.</div>
+          <div class="terminal">
+<span class="cmd">PS C:\> sc qc "VulnService"</span>
+<span class="out">BINARY_PATH_NAME   : C:\Program Files\Vuln App\service.exe</span>
+<span class="cmd">PS C:\> sc config "VulnService" binpath= "\"C:\Program Files\Vuln App\service.exe\""</span>
+<span class="out">[SC] ChangeServiceConfig SUCCESS</span>
+          </div>
+          <div class="card-desc" style="margin-top:10px"><strong>Acciones:</strong> Audita todas las rutas de servicios. Corrige las que no tengan comillas. Usa PowerUp en modo defensivo.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span><span class="severity sev-med"></span>Parches y Actualizaciones</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="terminal">
+<span class="cmd">PS C:\> Install-Module PSWindowsUpdate -Force</span>
+<span class="cmd">PS C:\> Get-WUHistory</span>
+<span class="cmd">PS C:\> Get-WUInstall -AcceptAll -AutoReboot</span>
+<span class="cmd">PS C:\> wmic qfe get Caption,Description,HotFixID,InstalledOn</span>
+          </div>
+          <div class="card-desc" style="margin-top:10px"><strong>Acciones:</strong> WSUS/SCCM para parches centralizados. Audita parches faltantes con <code>windows-exploit-suggester</code>.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span><span class="severity sev-high"></span>AlwaysInstallElevated</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="card-desc">Esta configuración permite que cualquier usuario instale MSI con privilegios de SYSTEM. Debe estar deshabilitada.</div>
+          <div class="terminal">
+<span class="cmd">PS C:\> reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated</span>
+<span class="cmd">PS C:\> reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated</span>
+<span class="comment"># Si existe y es 0x1, eliminar:</span>
+<span class="cmd">PS C:\> reg delete HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated /f</span>
+<span class="cmd">PS C:\> reg delete HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated /f</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span><span class="severity sev-med"></span>AppLocker / WDAC</span>
+          <span class="acc-icon">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="card-desc">AppLocker o Windows Defender Application Control (WDAC) pueden prevenir la ejecución de binarios no autorizados.</div>
+          <div class="terminal">
+<span class="cmd">PS C:\> Get-AppLockerPolicy -Effective | Format-List</span>
+<span class="cmd">PS C:\> Get-WdacPolicy -PolicyType Base</span>
+          </div>
+          <div class="card-desc" style="margin-top:10px"><strong>Acciones:</strong> Implementa reglas de AppLocker para restringir ejecución en directorios escribibles por usuarios (<code>C:\Users\Public</code>, <code>C:\Windows\Temp</code>, etc.).</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GENERAL -->
+    <div id="general" class="panel">
+      <div class="card">
+        <div class="card-title">📋 Principios Generales de Defensa</div>
+        <div class="card-desc">Estas prácticas aplican a cualquier sistema operativo y son la base de una postura defensiva sólida.</div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🔒 Principio de Mínimo Privilegio</div>
+          <div class="card-desc">Cada usuario, servicio y aplicación debe tener únicamente los permisos estrictamente necesarios para su función. Nada más.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">📊 Segmentación de Red</div>
+          <div class="card-desc">Separa redes por función. Un compromiso en la DMZ no debería permitir acceso a la red interna crítica.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">🔍 Logging y Monitoreo</div>
+          <div class="card-desc">Centraliza logs de autenticación, ejecución de procesos, y cambios de permisos. Usa SIEM para correlacionar eventos.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">🔄 Actualizaciones Automáticas</div>
+          <div class="card-desc">Aplica parches de seguridad tan pronto como estén disponibles. Los exploits públicos aparecen días después del parche.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🛡️ Estrategia de Defensa en Profundidad</div>
+        <ul class="num-list">
+          <li><span class="num">1</span><strong>Perímetro:</strong> Firewall, WAF, IDS/IPS</li>
+          <li><span class="num">2</span><strong>Red:</strong> VLANs, microsegmentación, Zero Trust</li>
+          <li><span class="num">3</span><strong>Host:</strong> EDR, HIDS, hardening del SO</li>
+          <li><span class="num">4</span><strong>Aplicación:</strong> Secure coding, SAST/DAST</li>
+          <li><span class="num">5</span><strong>Datos:</strong> Cifrado en reposo y tránsito, DLP</li>
+          <li><span class="num">6</span><strong>Identidad:</strong> MFA, PAM, gestión de secretos</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CHECKLIST -->
+    <div id="checklist" class="panel">
+      <div class="card">
+        <div class="card-title">✅ Checklist de Hardening</div>
+        <div class="card-desc">Marca cada ítem que hayas implementado. Un sistema seguro debería tener todo marcado.</div>
+      </div>
+
+      <div class="card">
+        <div style="font-weight:700; font-size:14px; margin-bottom:12px;">🐧 Linux</div>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Sudo configurado sin NOPASSWD innecesario</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Binarios SUID auditados y minimizados</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Kernel actualizado con parches de seguridad</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Permisos de /etc/passwd, /etc/shadow correctos</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Cron jobs auditados (no editables por usuarios)</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Grupo docker restringido a administradores</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>SELinux o AppArmor habilitado y en enforcing</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>SSH con autenticación por clave, sin root login</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Logs centralizados (rsyslog / syslog-ng / SIEM)</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Fail2ban o similar para protección SSH</span></label>
+      </div>
+
+      <div class="card">
+        <div style="font-weight:700; font-size:14px; margin-bottom:12px;">🪟 Windows</div>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Parches de seguridad aplicados (WSUS/SCCM)</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Privilegios de usuario auditados (SeImpersonate, etc.)</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Rutas de servicios entre comillas dobles</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>AlwaysInstallElevated deshabilitado</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>AppLocker o WDAC configurado</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>UAC al máximo nivel</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Windows Defender habilitado y actualizado</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>PowerShell Constrained Language Mode</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>AMSI habilitado y funcional</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Event logging habilitado y centralizado</span></label>
+      </div>
+
+      <div class="card">
+        <div style="font-weight:700; font-size:14px; margin-bottom:12px;">📋 General</div>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>MFA habilitado en todos los puntos de acceso</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Pentesting interno o red team anual</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Backup offline y plan de recuperación</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Política de contraseñas fuerte (14+ chars, complejidad)</span></label>
+        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Rotación de credenciales de servicio periódica</span></label>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Hecho con 💻 para la comunidad de ciberseguridad.</p>
+      <p style="margin-top:10px; font-size:11px; color:#555;">⚠️ Uso exclusivo para fines educativos y pentesting autorizado.</p>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function toggleAcc(header) {
+      const body = header.nextElementSibling;
+      header.classList.toggle('open');
+      body.classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratorios de Práctica — Escalamiento de Privilegios</title>
+  <style>
+    :root {
+      --bg: #0f0f0f; --surface: #1a1a1a; --surface-2: #242424; --border: #333;
+      --text-primary: #f5f5f5; --text-secondary: #a0a0a0; --text-tertiary: #666;
+      --accent: #00d4aa; --danger: #ff6b6b; --warning: #f5a623; --positive: #00d4aa;
+      --chart-1: #4dabf7; --chart-2: #ff6b6b; --chart-3: #51cf66; --chart-4: #be4bdb;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: "SF Mono", "Fira Code", Consolas, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-sans); background: var(--bg); color: var(--text-primary); line-height: 1.6; min-height: 100vh; }
+    .container { max-width: 800px; margin: 0 auto; padding: 24px 16px; }
+    .header { text-align: center; margin-bottom: 28px; padding: 24px 0; border-bottom: 1px solid var(--border); }
+    .header h1 { font-size: 26px; font-weight: 800; }
+    .header p { margin-top: 8px; color: var(--text-secondary); font-size: 14px; }
+    .nav { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+    .nav a { color: var(--text-secondary); text-decoration: none; font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border); transition: all 0.15s; }
+    .nav a:hover { color: var(--text-primary); background: var(--surface); border-color: var(--accent); }
+    .card { border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 12px; background: var(--surface); }
+    .card-title { font-weight: 700; font-size: 15px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+    .card-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+    .card code { font-family: var(--font-mono); background: var(--surface-2); padding: 2px 6px; border-radius: 4px; font-size: 12px; color: var(--accent); }
+    .badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid var(--border); margin-right: 4px; margin-bottom: 4px; }
+    .badge-green { background: rgba(0,212,170,0.12); color: var(--positive); border-color: rgba(0,212,170,0.3); }
+    .badge-orange { background: rgba(245,166,35,0.12); color: var(--warning); border-color: rgba(245,166,35,0.3); }
+    .badge-red { background: rgba(255,107,107,0.12); color: var(--danger); border-color: rgba(255,107,107,0.3); }
+    .badge-blue { background: rgba(77,171,247,0.12); color: var(--chart-1); border-color: rgba(77,171,247,0.3); }
+    .badge-purple { background: rgba(190,75,219,0.12); color: var(--chart-4); border-color: rgba(190,75,219,0.3); }
+    .lab-item { border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 10px; background: var(--surface); transition: all 0.15s; }
+    .lab-item:hover { border-color: var(--accent); }
+    .lab-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+    .lab-name { font-weight: 700; font-size: 14px; }
+    .lab-platform { font-size: 11px; font-weight: 600; }
+    .lab-desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; }
+    .lab-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .lab-link { color: var(--accent); text-decoration: none; font-size: 12px; font-weight: 600; }
+    .lab-link:hover { text-decoration: underline; }
+    .roadmap { display: flex; flex-direction: column; gap: 0; margin: 16px 0; }
+    .roadmap-step { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .roadmap-step:last-child { border-bottom: none; }
+    .roadmap-num { width: 28px; height: 28px; border-radius: 50%; background: var(--surface-2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .roadmap-content { flex: 1; }
+    .roadmap-title { font-weight: 600; font-size: 14px; }
+    .roadmap-desc { font-size: 13px; color: var(--text-secondary); }
+    .footer { text-align: center; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-tertiary); font-size: 12px; }
+    .footer a { color: var(--accent); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #444; }
+    .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 20px; overflow-x: auto; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab { padding: 10px 16px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--text-tertiary); white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.15s; font-family: inherit; }
+    .tab:hover { color: var(--text-secondary); }
+    .tab.active { color: var(--text-primary); border-bottom-color: var(--accent); }
+    .panel { display: none; animation: fadeIn 0.25s ease; }
+    .panel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🧪 Laboratorios de Práctica</h1>
+      <p>Máquinas, CTFs y plataformas para practicar escalamiento de privilegios</p>
+    </div>
+
+    <div class="nav">
+      <a href="index.html">🏠 Inicio</a>
+      <a href="index.html">🐧 Linux</a>
+      <a href="windows-privesc.html">🪟 Windows</a>
+      <a href="mitigation.html">🛡️ Mitigación</a>
+      <a href="labs.html">🧪 Laboratorios</a>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('roadmap')">🗺️ Ruta de Aprendizaje</button>
+      <button class="tab" onclick="switchTab('tryhackme')">🎯 TryHackMe</button>
+      <button class="tab" onclick="switchTab('htb')">🏴‍☠️ HackTheBox</button>
+      <button class="tab" onclick="switchTab('vulnhub')">💿 VulnHub</button>
+      <button class="tab" onclick="switchTab('prolabs')">🏢 Pro Labs</button>
+    </div>
+
+    <!-- ROADMAP -->
+    <div id="roadmap" class="panel active">
+      <div class="card">
+        <div class="card-title">🗺️ Ruta de Aprendizaje Recomendada</div>
+        <div class="card-desc">Sigue esta ruta paso a paso para dominar el escalamiento de privilegios, desde principiante hasta avanzado.</div>
+      </div>
+
+      <div class="roadmap">
+        <div class="roadmap-step">
+          <div class="roadmap-num">1</div>
+          <div class="roadmap-content">
+            <div class="roadmap-title">Fundamentos de Linux</div>
+            <div class="roadmap-desc">Domina permisos, usuarios, grupos, SUID, sudo. Practica con <strong>Linux PrivEsc</strong> (TryHackMe) y máquinas fáciles de VulnHub.</div>
+          </div>
+        </div>
+        <div class="roadmap-step">
+          <div class="roadmap-num">2</div>
+          <div class="roadmap-content">
+            <div class="roadmap-title">Fundamentos de Windows</div>
+            <div class="roadmap-desc">Aprende privilegios de Windows, tokens, servicios. Practica con <strong>Windows PrivEsc</strong> (TryHackMe) y <strong>Blue</strong> (HTB).</div>
+          </div>
+        </div>
+        <div class="roadmap-step">
+          <div class="roadmap-num">3</div>
+          <div class="roadmap-content">
+            <div class="roadmap-title">Enumeración Automática</div>
+            <div class="roadmap-desc">Usa LinPEAS y WinPEAS. Entiende qué buscan y por qué. No dependas ciegamente de scripts.</div>
+          </div>
+        </div>
+        <div class="roadmap-step">
+          <div class="roadmap-num">4</div>
+          <div class="roadmap-content">
+            <div class="roadmap-title">Técnicas Avanzadas Linux</div>
+            <div class="roadmap-desc">Kernel exploits, capabilities, Docker escape, LD_PRELOAD. Máquinas HTB medium como <strong>Lame</strong>, <strong>SwagShop</strong>.</div>
+          </div>
+        </div>
+        <div class="roadmap-step">
+          <div class="roadmap-num">5</div>
+          <div class="roadmap-content">
+            <div class="roadmap-title">Técnicas Avanzadas Windows</div>
+            <div class="roadmap-desc">Token impersonation, AD abuse, GPO misconfig. Máquinas HTB medium/hard como <strong>Active</strong>, <strong>Sauna</strong>.</div>
+          </div>
+        </div>
+        <div class="roadmap-step">
+          <div class="roadmap-num">6</div>
+          <div class="roadmap-content">
+            <div class="roadmap-title">Active Directory</div>
+            <div class="roadmap-desc">Pivoting, lateral movement, BloodHound, impacket. Pro Labs de HTB o TryHackMe AD paths.</div>
+          </div>
+        </div>
+        <div class="roadmap-step">
+          <div class="roadmap-num">7</div>
+          <div class="roadmap-content">
+            <div class="roadmap-title">Certificaciones</div>
+            <div class="roadmap-desc">Considera OSCP, eJPT, PNPT, CRTP. Son prácticas y validan tu progreso.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRYHACKME -->
+    <div id="tryhackme" class="panel">
+      <div class="card">
+        <div class="card-title">🎯 TryHackMe — Salas Recomendadas</div>
+        <div class="card-desc">Plataforma con guías paso a paso. Ideal para principiantes e intermedios.</div>
+      </div>
+
+      <div class="lab-item">
+        <div class="lab-header">
+          <div class="lab-name">Linux Privilege Escalation</div>
+          <span class="badge badge-green">Gratis</span>
+        </div>
+        <div class="lab-desc">Cubre SUID, sudo abuse, cron jobs, PATH hijacking, kernel exploits. La sala definitiva para empezar.</div>
+        <div class="lab-tags">
+          <span class="badge badge-green">Linux</span>
+          <span class="badge badge-orange">Principiante</span>
+          <a class="lab-link" href="https://tryhackme.com/room/linuxprivesc" target="_blank">→ Abrir sala</a>
+        </div>
+      </div>
+
+      <div class="lab-item">
+        <div class="lab-header">
+          <div class="lab-name">Windows Privilege Escalation</div>
+          <span class="badge badge-green">Gratis</span>
+        </div>
+        <div class="lab-desc">Token impersonation, unquoted service paths, AlwaysInstallElevated, kernel exploits en Windows.</div>
+        <div class="lab-tags">
+          <span class="badge badge-blue">Windows</span>
+          <span class="badge badge-orange">Principiante</span>
+          <a class="lab-link" href="https://tryhackme.com/room/windows10privesc" target="_blank">→ Abrir sala</a>
+        </div>
+      </div>
+
+      <div class="lab-item">
+        <div class="lab-header">
+          <div class="lab-name">Sudo Security Bypass</div>
+          <span class="badge badge-green">Gratis</span>
+        </div>
+        <div class="lab-desc">Profundiza en configuraciones inseguras de sudo y cómo abusarlas.</div>
+        <div class="lab-tags">
+          <span class="badge badge-green">Linux</span>
+          <span class="badge badge-orange">Intermedio</span>
+          <a class="lab-link" href="https://tryhackme.com/room/sudovulns" target="_blank">→ Abrir sala</a>
+        </div>
+      </div>
+
+      <div class="lab-item">
+        <div class="lab-header">
+          <div class="lab-name">Common Linux Privesc</div>
+          <span class="badge badge-green">Gratis</span>
+        </div>
+        <div class="lab-desc">Vectores comunes de escalamiento en Linux con escenarios prácticos.</div>
+        <div class="lab-tags">
+          <span class="badge badge-green">Linux</span>
+          <span class="badge badge-orange">Intermedio</span>
+          <a class="lab-link" href="https://tryhackme.com/room/commonlinuxprivesc" target="_blank">→ Abrir sala</a>
+        </div>
+      </div>
+
+      <div class="lab-item">
+        <div class="lab-header">
+          <div class="lab-name">Active Directory Basics</div>
+          <span class="badge badge-green">Gratis</span>
+        </div>
+        <div class="lab-desc">Introducción a AD, Kerberos, y escalamiento en entornos corporativos.</div>
+        <div class="lab-tags">
+          <span class="badge badge-blue">Windows</span>
+          <span class="badge badge-purple">AD</span>
+          <span class="badge badge-orange">Intermedio</span>
+          <a class="lab-link" href="https://tryhackme.com/room/activedirectorybasics" target="_blank">→ Abrir sala</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- HTB -->
+    <div id="htb" class="panel">
+      <div class="card">
+        <div class="card-title">🏴‍☠️ HackTheBox — Máquinas Recomendadas</div>
+        <div class="card-desc">Máquinas reales, sin guías. Ideal para practicar metodología propia.</div>
+      </div>
+
+      <div class="lab-item">
+        <div class="lab-header">
+          <div class="lab-name">Lame</div>
+          <span class="badge badge-green">Easy</span>
+        </div>
+        <div class="lab-desc">Samba + distcc. Escalamiento vía sudo exploit clásico. Perfecta para empezar.</div>
+        <div class="lab-tags">
+          <span class="badge badge-green">Linux</span>
+          <span class="badge badge-green">Easy</span>
+          <span class="badge badge-orange">OSCP-like</span>
+        </div>
+      </div>
+
+      <div class="lab-item">
+        <div class="lab-header">
+          <div class="lab-name">Blue</div>
+          <span class="badge badge-green">Easy</span>
+        </div>
+        <div class="lab-desc">EternalBlue (MS17-010). Escalamiento directo a SYSTEM. Clásica de Windows.</div>
+        <div class="lab-tags">
+          <span class="badge badge-blue">Windows</span>
+          <span class="badge badge-green">Easy</span>
+          <span class="badge badge-orange">OSCP-like</span>
+        </div>
+      </div>
+
+      <div class="lab-item">
+        <div class="lab-header">
+          <div class="lab-name">SwagShop</div>
+          <span class="badge badge-orange">Easy</span>
+        </div>
+        <div class="lab-desc">Magento exploit → shell → escalamiento vía sudo. Buena práctica de enumeración web + privesc.</div>
+        <div class="lab-tags">
+          <span class="badge badge-green">Linux</span>
+          <span class="badge badge-green">Easy</span>
+          <span class="badge badge-orange">Web → PrivEsc</span>
+        </div>
+      </div>
+
+      <div class="lab-item">
+        <div class="lab-header">
+          <div class="lab-name">Bastion</div>
+          <span class="badge badge-orange">Easy</span>
+        </div>
+        <div class="lab-desc">Windows con VHD montable. Escalamiento vía SAM hashes. Creativa y educativa.</div>
+        <div class="lab-tags">
+          <span class="badge badge-blue">Windows</span>
+          <span class="badge badge-green">Easy</span>
+          <span class="badge badge-orange">OSCP-like</span>
+        </div>
+      </div>
+
+      <div class="lab-item">
+        <div class="lab-header">
+          <div class="lab-name">Active</div>
+          <span class="badge badge-orange">Medium</span>
+        </div>
+        <div class="lab-desc">Active Directory completo. Kerberoasting, AS-REP Roasting, DCSync. Escencial para AD.</div>
+        <div class="lab-tags">
+          <span class="badge badge-blue">Windows</span>
+          <span class="badge badge-purple">AD</span>
+          <span class="badge badge-orange">Medium</span>
+        </div>
+      </div>
+
+      <div class="lab-item">
+        <div class="lab-header">
+          <div class="lab-name">Sauna</div>
+          <span class="badge badge-orange">Easy</span>
+        </div>
+        <div class="lab-desc">AD con AS-REP Roasting. Escalamiento vía DCSync. Excelente para practicar impacket.</div>
+        <div class="lab-tags">
+          <span class="badge badge-blue">Windows</span>
+          <span class="badge badge-purple">AD</span>
+          <span class="badge badge-green">Easy</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- VULNHUB -->
+    <div id="vulnhub" class="panel">
+      <div class="card">
+        <div class="card-title">💿 VulnHub — Máquinas Locales</div>
+        <div class="card-desc">Descarga máquinas vulnerables y ejecútalas en VirtualBox/VMware. Sin costo, sin límites de tiempo.</div>
+      </div>
+
+      <div class="lab-item">
+        <div class="lab-header">
+          <div class="lab-name">Kioptrix: Level 1 (#1)</div>
+          <span class="badge badge-green">Principiante</span>
+        </div>
+        <div class="lab-desc">La máquina clásica para empezar. Samba trans2open + kernel exploit. Instala en VirtualBox y practica offline.</div>
+        <div class="lab-tags">
+          <span class="badge badge-green">Linux</span>
+          <span class="badge badge-green">Principiante</span>
+          <a class="lab-link" href="https://www.vulnhub.com/entry/kioptrix-level-1-1,22/" target="_blank">→ Descargar</a>
+        </div>
+      </div>
+
+      <div class="lab-item">
+        <div class="lab-header">
+          <div class="lab-name">Kioptrix: Level 2</div>
+          <span class="badge badge-orange">Intermedio</span>
+        </div>
+        <div class="lab-desc">SQL injection → shell → escalamiento vía kernel. Un paso más allá del nivel 1.</div>
+        <div class="lab-tags">
+          <span class="badge badge-green">Linux</span>
+          <span class="badge badge-orange">Intermedio</span>
+          <a class="lab-link" href="https://www.vulnhub.com/entry/kioptrix-level-11-2,23/" target="_blank">→ Descargar</a>
+        </div>
+      </div>
+
+      <div class="lab-item">
+        <div class="lab-header">
+          <div class="lab-name">Mr-Robot: 1</div>
+          <span class="badge badge-orange">Intermedio</span>
+        </div>
+        <div class="lab-desc">WordPress → shell → escalamiento vía SUDO. Basada en la serie. Muy entretenida.</div>
+        <div class="lab-tags">
+          <span class="badge badge-green">Linux</span>
+          <span class="badge badge-orange">Intermedio</span>
+          <a class="lab-link" href="https://www.vulnhub.com/entry/mr-robot-1,151/" target="_blank">→ Descargar</a>
+        </div>
+      </div>
+
+      <div class="lab-item">
+        <div class="lab-header">
+          <div class="lab-name">Stapler: 1</div>
+          <span class="badge badge-orange">Intermedio</span>
+        </div>
+        <div class="lab-desc">Múltiples vectores de entrada. FTP, SMB, web. Escalamiento vía SUID y sudo.</div>
+        <div class="lab-tags">
+          <span class="badge badge-green">Linux</span>
+          <span class="badge badge-orange">Intermedio</span>
+          <a class="lab-link" href="https://www.vulnhub.com/entry/stapler-1,150/" target="_blank">→ Descargar</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRO LABS -->
+    <div id="prolabs" class="panel">
+      <div class="card">
+        <div class="card-title">🏢 Pro Labs y Certificaciones</div>
+        <div class="card-desc">Entornos empresariales simulados para practicar a escala real.</div>
+      </div>
+
+      <div class="lab-item">
+        <div class="lab-header">
+          <div class="lab-name">HackTheBox — Dante Pro Lab</div>
+          <span class="badge badge-red">Pago</span>
+        </div>
+        <div class="lab-desc">Red empresarial simulada con múltiples segmentos. Pivoting, AD, privesc en cadena. Ideal antes de OSCP.</div>
+        <div class="lab-tags">
+          <span class="badge badge-green">Linux</span>
+          <span class="badge badge-blue">Windows</span>
+          <span class="badge badge-purple">AD</span>
+          <a class="lab-link" href="https://academy.hackthebox.com/catalogue" target="_blank">→ Ver en HTB Academy</a>
+        </div>
+      </div>
+
+      <div class="lab-item">
+        <div class="lab-header">
+          <div class="lab-name">PentesterLab — Unix Badge</div>
+          <span class="badge badge-red">Pago</span>
+        </div>
+        <div class="lab-desc">Ejercicios guiados de escalamiento en Linux. Excelente para reforzar fundamentos con explicaciones detalladas.</div>
+        <div class="lab-tags">
+          <span class="badge badge-green">Linux</span>
+          <span class="badge badge-orange">Intermedio</span>
+          <a class="lab-link" href="https://pentesterlab.com/" target="_blank">→ Ver en PentesterLab</a>
+        </div>
+      </div>
+
+      <div class="lab-item">
+        <div class="lab-header">
+          <div class="lab-name">PortSwigger Web Security Academy</div>
+          <span class="badge badge-green">Gratis</span>
+        </div>
+        <div class="lab-desc">Aunque es web, muchos vectores de privesc empiezan con una RCE web. SQLi, SSTI, XXE → shell → root.</div>
+        <div class="lab-tags">
+          <span class="badge badge-green">Web</span>
+          <span class="badge badge-orange">Todos los niveles</span>
+          <a class="lab-link" href="https://portswigger.net/web-security" target="_blank">→ Abrir Academy</a>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <div class="card-title">📜 Certificaciones Recomendadas</div>
+        <div class="card-desc">Valida tu progreso con certificaciones prácticas reconocidas en la industria.</div>
+        <ul style="list-style:none; padding:0; margin-top:12px">
+          <li style="padding:8px 0; border-bottom:1px solid var(--border); font-size:14px"><strong>eJPT</strong> — eLearnSecurity Junior Penetration Tester. Entrada, práctico, económico.</li>
+          <li style="padding:8px 0; border-bottom:1px solid var(--border); font-size:14px"><strong>PNPT</strong> — Practical Network Penetration Tester. 100% práctico, reporte real.</li>
+          <li style="padding:8px 0; border-bottom:1px solid var(--border); font-size:14px"><strong>OSCP</strong> — Offensive Security Certified Professional. El estándar de la industria.</li>
+          <li style="padding:8px 0; border-bottom:1px solid var(--border); font-size:14px"><strong>CRTP</strong> — Certified Red Team Professional. Especializado en Active Directory.</li>
+          <li style="padding:8px 0; font-size:14px"><strong>eCPPTv3</strong> — eLearnSecurity Certified Professional Penetration Tester. Más completo que eJPT.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Hecho with 💻 para la comunidad de ciberseguridad.</p>
+      <p style="margin-top:10px; font-size:11px; color:#555;">⚠️ Uso exclusivo para fines educativos y pentesting autorizado.</p>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
