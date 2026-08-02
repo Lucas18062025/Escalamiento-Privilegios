@@ -54,6 +54,11 @@
     .badge-red { background: var(--danger-dim); color: var(--danger); border-color: rgba(255,107,107,0.3); }
     .badge-blue { background: rgba(77,171,247,0.12); color: var(--chart-1); border-color: rgba(77,171,247,0.3); }
 
+    /* Nav */
+    .nav { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+    .nav a { color: var(--text-secondary); text-decoration: none; font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border); transition: all 0.15s; }
+    .nav a:hover { color: var(--text-primary); background: var(--surface); border-color: var(--accent); }
+
     /* Tabs */
     .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 20px; overflow-x: auto; scrollbar-width: none; }
     .tabs::-webkit-scrollbar { display: none; }
@@ -185,6 +190,14 @@
         <span class="badge badge-blue">🎮 CTF Simulador</span>
         <span class="badge badge-red">⚠️ Solo uso autorizado</span>
       </div>
+    </div>
+
+    <div class="nav">
+      <a href="index.html">🏠 Inicio</a>
+      <a href="index.html">🐧 Linux</a>
+      <a href="windows-privesc.html">🪟 Windows</a>
+      <a href="mitigation.html">🛡️ Mitigación</a>
+      <a href="labs.html">🧪 Laboratorios</a>
     </div>
 
     <div class="tabs">
