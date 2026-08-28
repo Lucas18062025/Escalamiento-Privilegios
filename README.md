@@ -12,57 +12,6 @@ Una guía web interactiva, autocontenida y lista para desplegar en **Cloudflare 
 
 ---
 
-## 🚀 Despliegue en Cloudflare Pages
-
-### Opción A: Drag & Drop (Más rápido)
-
-1. Ve a [dash.cloudflare.com](https://dash.cloudflare.com) e inicia sesión.
-2. Navega a **Pages** → **Create a project**.
-3. Selecciona la pestaña **Upload assets** (subir archivos).
-4. Arrastra el archivo `index.html` (o comprímelo en un `.zip` primero).
-5. Cloudflare generará automáticamente una URL como:
-   ```
-   https://tu-proyecto.pages.dev
-   ```
-
-### Opción B: Desde GitHub (Recomendado para CI/CD)
-
-1. Crea un nuevo repositorio en GitHub.
-2. Sube el `index.html` a la raíz del repo:
-   ```bash
-   git init
-   git add index.html
-   git commit -m "Initial commit"
-   git branch -M main
-   git remote add origin https://github.com/TU_USUARIO/TU_REPO.git
-   git push -u origin main
-   ```
-3. En Cloudflare Pages → **Create a project** → **Connect to Git**.
-4. Selecciona tu repositorio.
-5. Configuración del build:
-   - **Framework preset:** `None`
-   - **Build command:** *(dejar vacío)*
-   - **Build output directory:** `/` (raíz)
-6. Click en **Save and Deploy**.
-
-### Opción C: Wrangler CLI (Para desarrolladores)
-
-```bash
-# Instala Wrangler si no lo tienes
-npm install -g wrangler
-
-# Autentícate
-wrangler login
-
-# Crea el proyecto
-npx wrangler pages project create kali-privesc-guide
-
-# Despliega
-npx wrangler pages deploy . --project-name=kali-privesc-guide
-```
-
----
-
 ## 🗺️ Estructura del Sitio
 
 El sitio tiene 7 pestañas interactivas:
