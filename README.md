@@ -8,13 +8,17 @@ Una guía web interactiva, autocontenida y lista para desplegar en **Cloudflare 
 
 | Archivo | Descripción |
 |---------|-------------|
-| `index.html` | Sitio web completo (HTML + CSS + JS en un solo archivo) |
+| `index.html` | Guía Linux: 7 pestañas (fundamentos → cheatsheet) + nav global |
+| `windows-privesc.html` | Guía Windows: privesc en AD/hosts Windows |
+| `mitigation.html` | Mitigación Blue Team: hardening y detección |
+| `labs.html` | Laboratorios prácticos guiados |
 
 ---
 
 ## 🗺️ Estructura del Sitio
 
-El sitio tiene 7 pestañas interactivas:
+`index.html` concentra la guía Linux en 7 pestañas interactivas + nav global
+a las 3 páginas hermanas (`windows-privesc.html`, `mitigation.html`, `labs.html`):
 
 1. **Fundamentos** — Conceptos básicos: escalamiento vertical vs horizontal, flujo de trabajo.
 2. **Enumeración** — Comandos esenciales organizados por categoría (sistema, usuarios, SUID, red, capabilities).
@@ -56,8 +60,8 @@ Cybersecurity Analyst | Ethical Hacker | SOC Analyst
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-lucas--villagra--cybersecurity-0A66C2?style=flat&logo=linkedin)](https://linkedin.com/in/lucas-villagra-cybersecurity)
 [![GitHub](https://img.shields.io/badge/GitHub-Lucas18062025-181717?style=flat&logo=github)](https://github.com/Lucas18062025)
-[![Portfolio](https://img.shields.io/badge/Portfolio-lucas18062025.github.io-00D4FF?style=flat&logo=githubpages)](https://lucas18062025.github.io/Portafolio/)
+[![Portfolio](https://img.shields.io/badge/Portfolio-portafolio.lucaslean1806-00D4FF?style=flat&logo=cloudflare)](https://portafolio.lucaslean1806.workers.dev/)
 ---
 ## 📝 Licencia
 
-Uso educativo. No se permite el uso para actividades ilegales.
+MIT — ver [LICENSE](./LICENSE). Uso exclusivamente educativo y en pentesting autorizado.
