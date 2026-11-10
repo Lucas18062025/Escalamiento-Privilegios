@@ -22,10 +22,10 @@
     </div>
 
     <div class="tabs">
-      <button class="tab active" onclick="switchTab('linux')">🐧 Linux</button>
-      <button class="tab" onclick="switchTab('windows')">🪟 Windows</button>
-      <button class="tab" onclick="switchTab('general')">📋 General</button>
-      <button class="tab" onclick="switchTab('checklist')">✅ Checklist</button>
+      <button class="tab active" data-tab="linux">🐧 Linux</button>
+      <button class="tab" data-tab="windows">🪟 Windows</button>
+      <button class="tab" data-tab="general">📋 General</button>
+      <button class="tab" data-tab="checklist">✅ Checklist</button>
     </div>
 
     <!-- LINUX MITIGATION -->
@@ -36,7 +36,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span><span class="severity sev-high"></span>Configuración de Sudo</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -55,7 +55,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span><span class="severity sev-high"></span>Binarios SUID/SGID</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -74,7 +74,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span><span class="severity sev-med"></span>Kernel y Parches</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -91,7 +91,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span><span class="severity sev-med"></span>Permisos de Archivos Críticos</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -111,7 +111,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span><span class="severity sev-high"></span>Docker y Contenedores</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -137,7 +137,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span><span class="severity sev-high"></span>Privilegios de Usuario</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -155,7 +155,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span><span class="severity sev-high"></span>Servicios: Rutas con Comillas</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -172,7 +172,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span><span class="severity sev-med"></span>Parches y Actualizaciones</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -188,7 +188,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span><span class="severity sev-high"></span>AlwaysInstallElevated</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -205,7 +205,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span><span class="severity sev-med"></span>AppLocker / WDAC</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -268,39 +268,39 @@
 
       <div class="card">
         <div style="font-weight:700; font-size:14px; margin-bottom:12px;">🐧 Linux</div>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Sudo configurado sin NOPASSWD innecesario</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Binarios SUID auditados y minimizados</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Kernel actualizado con parches de seguridad</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Permisos de /etc/passwd, /etc/shadow correctos</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Cron jobs auditados (no editables por usuarios)</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Grupo docker restringido a administradores</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>SELinux o AppArmor habilitado y en enforcing</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>SSH con autenticación por clave, sin root login</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Logs centralizados (rsyslog / syslog-ng / SIEM)</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Fail2ban o similar para protección SSH</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>Sudo configurado sin NOPASSWD innecesario</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>Binarios SUID auditados y minimizados</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>Kernel actualizado con parches de seguridad</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>Permisos de /etc/passwd, /etc/shadow correctos</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>Cron jobs auditados (no editables por usuarios)</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>Grupo docker restringido a administradores</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>SELinux o AppArmor habilitado y en enforcing</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>SSH con autenticación por clave, sin root login</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>Logs centralizados (rsyslog / syslog-ng / SIEM)</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>Fail2ban o similar para protección SSH</span></label>
       </div>
 
       <div class="card">
         <div style="font-weight:700; font-size:14px; margin-bottom:12px;">🪟 Windows</div>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Parches de seguridad aplicados (WSUS/SCCM)</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Privilegios de usuario auditados (SeImpersonate, etc.)</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Rutas de servicios entre comillas dobles</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>AlwaysInstallElevated deshabilitado</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>AppLocker o WDAC configurado</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>UAC al máximo nivel</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Windows Defender habilitado y actualizado</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>PowerShell Constrained Language Mode</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>AMSI habilitado y funcional</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Event logging habilitado y centralizado</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>Parches de seguridad aplicados (WSUS/SCCM)</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>Privilegios de usuario auditados (SeImpersonate, etc.)</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>Rutas de servicios entre comillas dobles</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>AlwaysInstallElevated deshabilitado</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>AppLocker o WDAC configurado</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>UAC al máximo nivel</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>Windows Defender habilitado y actualizado</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>PowerShell Constrained Language Mode</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>AMSI habilitado y funcional</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>Event logging habilitado y centralizado</span></label>
       </div>
 
       <div class="card">
         <div style="font-weight:700; font-size:14px; margin-bottom:12px;">📋 General</div>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>MFA habilitado en todos los puntos de acceso</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Pentesting interno o red team anual</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Backup offline y plan de recuperación</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Política de contraseñas fuerte (14+ chars, complejidad)</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span>Rotación de credenciales de servicio periódica</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>MFA habilitado en todos los puntos de acceso</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>Pentesting interno o red team anual</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>Backup offline y plan de recuperación</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>Política de contraseñas fuerte (14+ chars, complejidad)</span></label>
+        <label class="checklist-item"><input type="checkbox"><span>Rotación de credenciales de servicio periódica</span></label>
       </div>
     </div>
 
@@ -310,19 +310,6 @@
     </div>
   </div>
 
-  <script>
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      event.target.classList.add('active');
-      document.getElementById(tabId).classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    function toggleAcc(header) {
-      const body = header.nextElementSibling;
-      header.classList.toggle('open');
-      body.classList.toggle('open');
-    }
-  </script>
+  <script src="assets/site.js?v=20261110" defer></script>
 </body>
 </html>

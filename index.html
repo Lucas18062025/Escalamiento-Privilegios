@@ -29,13 +29,13 @@
     </div>
 
     <div class="tabs">
-      <button class="tab active" onclick="switchTab('basics')">Fundamentos</button>
-      <button class="tab" onclick="switchTab('enum')">Enumeración</button>
-      <button class="tab" onclick="switchTab('techniques')">Técnicas</button>
-      <button class="tab" onclick="switchTab('tools')">Herramientas</button>
-      <button class="tab" onclick="switchTab('ctf')">Simulador CTF</button>
-      <button class="tab" onclick="switchTab('quiz')">Quiz</button>
-      <button class="tab" onclick="switchTab('cheatsheet')">Cheatsheet</button>
+      <button class="tab active" data-tab="basics">Fundamentos</button>
+      <button class="tab" data-tab="enum">Enumeración</button>
+      <button class="tab" data-tab="techniques">Técnicas</button>
+      <button class="tab" data-tab="tools">Herramientas</button>
+      <button class="tab" data-tab="ctf">Simulador CTF</button>
+      <button class="tab" data-tab="quiz">Quiz</button>
+      <button class="tab" data-tab="cheatsheet">Cheatsheet</button>
     </div>
 
     <!-- FUNDAMENTOS -->
@@ -84,7 +84,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>🖥️ Información del Sistema y Kernel</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -102,7 +102,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>👤 Usuarios, Grupos y Permisos</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -119,7 +119,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>⚙️ Procesos, Servicios y Cron</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -137,7 +137,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>🔐 Archivos SUID, SGID y Sticky</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -153,7 +153,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>🌐 Red, Variables de Entorno y Capacidades</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -177,7 +177,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>1️⃣ Sudo Abuse / GTFOBins</span>
           <span class="badge badge-green" style="margin-left:auto;margin-right:10px">Fácil</span>
           <span class="acc-icon">▼</span>
@@ -196,7 +196,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>2️⃣ SUID Binaries</span>
           <span class="badge badge-orange" style="margin-left:auto;margin-right:10px">Medio</span>
           <span class="acc-icon">▼</span>
@@ -215,7 +215,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>3️⃣ Kernel Exploits</span>
           <span class="badge badge-red" style="margin-left:auto;margin-right:10px">Avanzado</span>
           <span class="acc-icon">▼</span>
@@ -238,7 +238,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>4️⃣ PATH Hijacking</span>
           <span class="badge badge-orange" style="margin-left:auto;margin-right:10px">Medio</span>
           <span class="acc-icon">▼</span>
@@ -261,7 +261,7 @@ tar czf /backups/user.tar.gz *</span>
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>5️⃣ Capabilities (cap_setuid)</span>
           <span class="badge badge-orange" style="margin-left:auto;margin-right:10px">Medio</span>
           <span class="acc-icon">▼</span>
@@ -278,7 +278,7 @@ tar czf /backups/user.tar.gz *</span>
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>6️⃣ Docker / LXC Escape</span>
           <span class="badge badge-red" style="margin-left:auto;margin-right:10px">Avanzado</span>
           <span class="acc-icon">▼</span>
@@ -296,7 +296,7 @@ tar czf /backups/user.tar.gz *</span>
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>7️⃣ Writable /etc/passwd o /etc/sudoers</span>
           <span class="badge badge-green" style="margin-left:auto;margin-right:10px">Fácil</span>
           <span class="acc-icon">▼</span>
@@ -323,17 +323,17 @@ tar czf /backups/user.tar.gz *</span>
 
       <div class="card">
         <div style="font-weight:700; font-size:14px; margin-bottom:12px;">📜 Scripts de Enumeración Automática</div>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>LinPEAS</strong> — El más completo. Enumera TODO.</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>LinEnum</strong> — Alternativa ligera y rápida.</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>linux-exploit-suggester</strong> — Sugiere exploits para el kernel.</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>unix-privesc-check</strong> — Script en bash, sin dependencias.</span></label>
+        <label class="checklist-item"><input type="checkbox"><span><strong>LinPEAS</strong> — El más completo. Enumera TODO.</span></label>
+        <label class="checklist-item"><input type="checkbox"><span><strong>LinEnum</strong> — Alternativa ligera y rápida.</span></label>
+        <label class="checklist-item"><input type="checkbox"><span><strong>linux-exploit-suggester</strong> — Sugiere exploits para el kernel.</span></label>
+        <label class="checklist-item"><input type="checkbox"><span><strong>unix-privesc-check</strong> — Script en bash, sin dependencias.</span></label>
       </div>
 
       <div class="card">
         <div style="font-weight:700; font-size:14px; margin-bottom:12px;">📚 Bases de Datos y Referencias</div>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>GTFOBins</strong> — Binarios SUID/sudo abusables.</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>Exploit-DB / searchsploit</strong> — Búsqueda local de exploits.</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>PayloadsAllTheThings</strong> — Cheatsheets de todo tipo.</span></label>
+        <label class="checklist-item"><input type="checkbox"><span><strong>GTFOBins</strong> — Binarios SUID/sudo abusables.</span></label>
+        <label class="checklist-item"><input type="checkbox"><span><strong>Exploit-DB / searchsploit</strong> — Búsqueda local de exploits.</span></label>
+        <label class="checklist-item"><input type="checkbox"><span><strong>PayloadsAllTheThings</strong> — Cheatsheets de todo tipo.</span></label>
       </div>
 
       <div class="card">
@@ -376,10 +376,10 @@ User www-data may run the following commands on target:
     (root) NOPASSWD: /usr/bin/awk</span>
           </div>
           <div class="card-desc" style="margin-top:12px"><strong>¿Qué haces ahora?</strong></div>
-          <button class="quiz-option btn-block" onclick="ctfNext(1, false, this)">Compilar un exploit de kernel</button>
-          <button class="quiz-option btn-block" onclick="ctfNext(1, true, this)">Buscar awk en GTFOBins y ejecutar sudo awk 'BEGIN {system("/bin/bash")}'</button>
-          <button class="quiz-option btn-block" onclick="ctfNext(1, false, this)">Editar /etc/passwd directamente</button>
-          <button class="quiz-option btn-block" onclick="ctfNext(1, false, this)">Hacer PATH hijacking</button>
+          <button class="quiz-option btn-block" data-stage="1" data-correct="0">Compilar un exploit de kernel</button>
+          <button class="quiz-option btn-block" data-stage="1" data-correct="1">Buscar awk en GTFOBins y ejecutar sudo awk 'BEGIN {system("/bin/bash")}'</button>
+          <button class="quiz-option btn-block" data-stage="1" data-correct="0">Editar /etc/passwd directamente</button>
+          <button class="quiz-option btn-block" data-stage="1" data-correct="0">Hacer PATH hijacking</button>
         </div>
       </div>
 
@@ -400,10 +400,10 @@ User www-data may run the following commands on target:
 <span class="out">CTF{sudo_gtfobins_master}</span>
           </div>
           <div class="card-desc" style="margin-top:12px"><strong>Ahora busca persistencia. ¿Qué técnica es más sigilosa?</strong></div>
-          <button class="quiz-option btn-block" onclick="ctfNext(2, false, this)">Crear un usuario nuevo en /etc/passwd</button>
-          <button class="quiz-option btn-block" onclick="ctfNext(2, true, this)">Agregar una clave SSH pública a /root/.ssh/authorized_keys</button>
-          <button class="quiz-option btn-block" onclick="ctfNext(2, false, this)">Modificar /etc/sudoers con visudo</button>
-          <button class="quiz-option btn-block" onclick="ctfNext(2, false, this)">Instalar un rootkit</button>
+          <button class="quiz-option btn-block" data-stage="2" data-correct="0">Crear un usuario nuevo en /etc/passwd</button>
+          <button class="quiz-option btn-block" data-stage="2" data-correct="1">Agregar una clave SSH pública a /root/.ssh/authorized_keys</button>
+          <button class="quiz-option btn-block" data-stage="2" data-correct="0">Modificar /etc/sudoers con visudo</button>
+          <button class="quiz-option btn-block" data-stage="2" data-correct="0">Instalar un rootkit</button>
         </div>
       </div>
 
@@ -421,10 +421,10 @@ User www-data may run the following commands on target:
 <span class="root"># chmod 600 /root/.ssh/authorized_keys</span>
           </div>
           <div class="card-desc" style="margin-top:12px"><strong>Ahora limpia tus huellas. ¿Qué archivo de logs NO deberías tocar para no levantar sospechas?</strong></div>
-          <button class="quiz-option btn-block" onclick="ctfNext(3, false, this)">/var/log/auth.log</button>
-          <button class="quiz-option btn-block" onclick="ctfNext(3, false, this)">/var/log/syslog</button>
-          <button class="quiz-option btn-block" onclick="ctfNext(3, true, this)">Ninguno: borrar logs genera más alertas que dejarlos</button>
-          <button class="quiz-option btn-block" onclick="ctfNext(3, false, this)">/var/log/apache2/access.log</button>
+          <button class="quiz-option btn-block" data-stage="3" data-correct="0">/var/log/auth.log</button>
+          <button class="quiz-option btn-block" data-stage="3" data-correct="0">/var/log/syslog</button>
+          <button class="quiz-option btn-block" data-stage="3" data-correct="1">Ninguno: borrar logs genera más alertas que dejarlos</button>
+          <button class="quiz-option btn-block" data-stage="3" data-correct="0">/var/log/apache2/access.log</button>
         </div>
       </div>
 
@@ -442,7 +442,7 @@ User www-data may run the following commands on target:
           <div style="margin-top:16px">
             <span class="badge badge-blue">CTF Completado</span>
           </div>
-          <button class="btn btn-primary" style="margin-top:16px" onclick="resetCTF()">🔄 Reiniciar Simulador</button>
+          <button class="btn btn-primary" style="margin-top:16px" data-action="reset-ctf">🔄 Reiniciar Simulador</button>
         </div>
       </div>
     </div>
@@ -457,42 +457,42 @@ User www-data may run the following commands on target:
       <div id="quiz-container">
         <div class="card" id="q1">
           <div style="font-weight:700; font-size:14px; margin-bottom:12px;">1. ¿Qué comando muestra qué binarios puedes ejecutar como root con sudo?</div>
-          <button class="quiz-option btn-block" onclick="answerQuiz(1, 'a', false, this)">A. sudo -i</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(1, 'b', true, this)">B. sudo -l</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(1, 'c', false, this)">C. sudo -u root</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(1, 'd', false, this)">D. sudo --list-privs</button>
+          <button class="quiz-option btn-block" data-q="1" data-correct="0">A. sudo -i</button>
+          <button class="quiz-option btn-block" data-q="1" data-correct="1">B. sudo -l</button>
+          <button class="quiz-option btn-block" data-q="1" data-correct="0">C. sudo -u root</button>
+          <button class="quiz-option btn-block" data-q="1" data-correct="0">D. sudo --list-privs</button>
         </div>
 
         <div class="card" id="q2" style="opacity:0.35; pointer-events:none;">
           <div style="font-weight:700; font-size:14px; margin-bottom:12px;">2. ¿Qué bit de permiso permite que un binario se ejecute con los privilegios del propietario?</div>
-          <button class="quiz-option btn-block" onclick="answerQuiz(2, 'a', false, this)">A. SGID (2000)</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(2, 'b', true, this)">B. SUID (4000)</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(2, 'c', false, this)">C. Sticky (1000)</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(2, 'd', false, this)">D. EXEC (0100)</button>
+          <button class="quiz-option btn-block" data-q="2" data-correct="0">A. SGID (2000)</button>
+          <button class="quiz-option btn-block" data-q="2" data-correct="1">B. SUID (4000)</button>
+          <button class="quiz-option btn-block" data-q="2" data-correct="0">C. Sticky (1000)</button>
+          <button class="quiz-option btn-block" data-q="2" data-correct="0">D. EXEC (0100)</button>
         </div>
 
         <div class="card" id="q3" style="opacity:0.35; pointer-events:none;">
           <div style="font-weight:700; font-size:14px; margin-bottom:12px;">3. ¿Qué capability permite cambiar el UID de un proceso?</div>
-          <button class="quiz-option btn-block" onclick="answerQuiz(3, 'a', true, this)">A. cap_setuid</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(3, 'b', false, this)">B. cap_sys_admin</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(3, 'c', false, this)">C. cap_net_raw</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(3, 'd', false, this)">D. cap_dac_override</button>
+          <button class="quiz-option btn-block" data-q="3" data-correct="1">A. cap_setuid</button>
+          <button class="quiz-option btn-block" data-q="3" data-correct="0">B. cap_sys_admin</button>
+          <button class="quiz-option btn-block" data-q="3" data-correct="0">C. cap_net_raw</button>
+          <button class="quiz-option btn-block" data-q="3" data-correct="0">D. cap_dac_override</button>
         </div>
 
         <div class="card" id="q4" style="opacity:0.35; pointer-events:none;">
           <div style="font-weight:700; font-size:14px; margin-bottom:12px;">4. ¿Cuál es la mejor práctica al encontrar un kernel vulnerable?</div>
-          <button class="quiz-option btn-block" onclick="answerQuiz(4, 'a', false, this)">A. Ejecutar el primer exploit que encuentres en Google</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(4, 'b', false, this)">B. Reiniciar el sistema para aplicar parches</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(4, 'c', true, this)">C. Verificar la arquitectura, compilar estáticamente y probar en un entorno seguro primero</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(4, 'd', false, this)">D. Usar Metasploit siempre, sin verificar</button>
+          <button class="quiz-option btn-block" data-q="4" data-correct="0">A. Ejecutar el primer exploit que encuentres en Google</button>
+          <button class="quiz-option btn-block" data-q="4" data-correct="0">B. Reiniciar el sistema para aplicar parches</button>
+          <button class="quiz-option btn-block" data-q="4" data-correct="1">C. Verificar la arquitectura, compilar estáticamente y probar en un entorno seguro primero</button>
+          <button class="quiz-option btn-block" data-q="4" data-correct="0">D. Usar Metasploit siempre, sin verificar</button>
         </div>
 
         <div class="card" id="q5" style="opacity:0.35; pointer-events:none;">
           <div style="font-weight:700; font-size:14px; margin-bottom:12px;">5. Si un script de root ejecuta <code>tar</code> sin ruta absoluta, ¿qué técnica aplicas?</div>
-          <button class="quiz-option btn-block" onclick="answerQuiz(5, 'a', false, this)">A. Kernel exploit</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(5, 'b', true, this)">B. PATH Hijacking</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(5, 'c', false, this)">C. SUID abuse</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(5, 'd', false, this)">D. Docker escape</button>
+          <button class="quiz-option btn-block" data-q="5" data-correct="0">A. Kernel exploit</button>
+          <button class="quiz-option btn-block" data-q="5" data-correct="1">B. PATH Hijacking</button>
+          <button class="quiz-option btn-block" data-q="5" data-correct="0">C. SUID abuse</button>
+          <button class="quiz-option btn-block" data-q="5" data-correct="0">D. Docker escape</button>
         </div>
       </div>
 
@@ -501,7 +501,7 @@ User www-data may run the following commands on target:
           <div class="result-emoji">🎓</div>
           <div class="result-title" id="quiz-score-text"></div>
           <div class="card-desc" id="quiz-feedback"></div>
-          <button class="btn btn-primary" style="margin-top:12px" onclick="resetQuiz()">Reiniciar Quiz</button>
+          <button class="btn btn-primary" style="margin-top:12px" data-action="reset-quiz">Reiniciar Quiz</button>
         </div>
       </div>
     </div>
@@ -514,7 +514,7 @@ User www-data may run the following commands on target:
       </div>
 
       <div class="accordion">
-        <div class="acc-header open" onclick="toggleAcc(this)">
+        <div class="acc-header open">
           <span>🖥️ Sistema y Kernel</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -531,7 +531,7 @@ User www-data may run the following commands on target:
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>👤 Usuarios y Permisos</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -547,7 +547,7 @@ User www-data may run the following commands on target:
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>🔐 SUID, SGID, Capabilities</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -562,7 +562,7 @@ User www-data may run the following commands on target:
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>⚙️ Procesos y Servicios</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -578,7 +578,7 @@ User www-data may run the following commands on target:
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>⏰ Cron y Tareas Programadas</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -594,7 +594,7 @@ User www-data may run the following commands on target:
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>🌐 Red y Conectividad</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -610,7 +610,7 @@ User www-data may run the following commands on target:
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>📦 Docker y Contenedores</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -643,105 +643,6 @@ User www-data may run the following commands on target:
       </div>
     </div>
     
-  <script>
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      event.target.classList.add('active');
-      document.getElementById(tabId).classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function toggleAcc(header) {
-      const body = header.nextElementSibling;
-      header.classList.toggle('open');
-      body.classList.toggle('open');
-    }
-
-    function ctfNext(stage, correct, btn) {
-      const parent = btn.parentElement;
-      const buttons = parent.querySelectorAll('.quiz-option');
-      buttons.forEach(b => { b.disabled = true; });
-
-      if (correct) {
-        btn.classList.add('correct');
-        setTimeout(() => {
-          document.getElementById('ctf-stage-' + stage).style.display = 'none';
-          document.getElementById('ctf-stage-' + (stage+1)).style.display = 'block';
-          document.getElementById('ctf-stage-' + (stage+1)).scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 900);
-      } else {
-        btn.classList.add('wrong');
-        parent.querySelectorAll('.quiz-option').forEach(b => {
-          if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
-        });
-        setTimeout(() => {
-          document.getElementById('ctf-stage-' + stage).style.display = 'none';
-          document.getElementById('ctf-stage-' + (stage+1)).style.display = 'block';
-          document.getElementById('ctf-stage-' + (stage+1)).scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 1600);
-      }
-    }
-
-    function resetCTF() {
-      for (let i = 0; i <= 3; i++) {
-        document.getElementById('ctf-stage-' + i).style.display = i === 0 ? 'block' : 'none';
-      }
-      document.querySelectorAll('#ctf .quiz-option').forEach(b => {
-        b.classList.remove('correct', 'wrong');
-        b.disabled = false;
-      });
-    }
-
-    let quizScore = 0;
-    function answerQuiz(q, ans, correct, btn) {
-      const parent = btn.parentElement;
-      const buttons = parent.querySelectorAll('.quiz-option');
-      buttons.forEach(b => { b.disabled = true; });
-
-      if (correct) {
-        btn.classList.add('correct');
-        quizScore++;
-      } else {
-        btn.classList.add('wrong');
-        buttons.forEach(b => {
-          if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
-        });
-      }
-
-      if (q < 5) {
-        setTimeout(() => {
-          const next = document.getElementById('q' + (q+1));
-          next.style.opacity = '1';
-          next.style.pointerEvents = 'auto';
-          next.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 700);
-      } else {
-        setTimeout(() => {
-          document.getElementById('quiz-result').style.display = 'block';
-          document.getElementById('quiz-score-text').textContent = 'Puntuación: ' + quizScore + '/5';
-          const feedback = quizScore === 5 ? '¡Perfecto! Dominas los fundamentos del escalamiento de privilegios.' :
-                          quizScore >= 3 ? '¡Buen trabajo! Repasa las técnicas que fallaste.' :
-                          'Sigue practicando. Revisa los paneles de Fundamentos y Técnicas.';
-          document.getElementById('quiz-feedback').textContent = feedback;
-          document.getElementById('quiz-result').scrollIntoView({ behavior: 'smooth' });
-        }, 900);
-      }
-    }
-
-    function resetQuiz() {
-      quizScore = 0;
-      document.getElementById('quiz-result').style.display = 'none';
-      for (let i = 1; i <= 5; i++) {
-        const card = document.getElementById('q' + i);
-        card.style.opacity = i === 1 ? '1' : '0.35';
-        card.style.pointerEvents = i === 1 ? 'auto' : 'none';
-        card.querySelectorAll('.quiz-option').forEach(b => {
-          b.classList.remove('correct', 'wrong');
-          b.disabled = false;
-        });
-      }
-    }
-  </script>
+  <script src="assets/site.js?v=20261110" defer></script>
 </body>
 </html>

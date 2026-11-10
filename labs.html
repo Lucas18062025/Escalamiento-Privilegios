@@ -22,11 +22,11 @@
     </div>
 
     <div class="tabs">
-      <button class="tab active" onclick="switchTab('roadmap')">🗺️ Ruta de Aprendizaje</button>
-      <button class="tab" onclick="switchTab('tryhackme')">🎯 TryHackMe</button>
-      <button class="tab" onclick="switchTab('htb')">🏴‍☠️ HackTheBox</button>
-      <button class="tab" onclick="switchTab('vulnhub')">💿 VulnHub</button>
-      <button class="tab" onclick="switchTab('prolabs')">🏢 Pro Labs</button>
+      <button class="tab active" data-tab="roadmap">🗺️ Ruta de Aprendizaje</button>
+      <button class="tab" data-tab="tryhackme">🎯 TryHackMe</button>
+      <button class="tab" data-tab="htb">🏴‍☠️ HackTheBox</button>
+      <button class="tab" data-tab="vulnhub">💿 VulnHub</button>
+      <button class="tab" data-tab="prolabs">🏢 Pro Labs</button>
     </div>
 
     <!-- ROADMAP -->
@@ -375,14 +375,6 @@
     </div>
   </div>
 
-  <script>
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      event.target.classList.add('active');
-      document.getElementById(tabId).classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  </script>
+  <script src="assets/site.js?v=20261110" defer></script>
 </body>
 </html>

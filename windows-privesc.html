@@ -22,12 +22,12 @@
     </div>
 
     <div class="tabs">
-      <button class="tab active" onclick="switchTab('basics')">Fundamentos</button>
-      <button class="tab" onclick="switchTab('enum')">Enumeración</button>
-      <button class="tab" onclick="switchTab('techniques')">Técnicas</button>
-      <button class="tab" onclick="switchTab('tools')">Herramientas</button>
-      <button class="tab" onclick="switchTab('ctf')">Simulador CTF</button>
-      <button class="tab" onclick="switchTab('quiz')">Quiz</button>
+      <button class="tab active" data-tab="basics">Fundamentos</button>
+      <button class="tab" data-tab="enum">Enumeración</button>
+      <button class="tab" data-tab="techniques">Técnicas</button>
+      <button class="tab" data-tab="tools">Herramientas</button>
+      <button class="tab" data-tab="ctf">Simulador CTF</button>
+      <button class="tab" data-tab="quiz">Quiz</button>
     </div>
 
     <!-- FUNDAMENTOS -->
@@ -79,7 +79,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>🖥️ Información del Sistema</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -95,7 +95,7 @@
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>👤 Usuario, Grupos y Privilegios</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -115,7 +115,7 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>⚙️ Servicios y Procesos</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -132,7 +132,7 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>🔐 Búsqueda de Archivos Sensibles</span>
           <span class="acc-icon">▼</span>
         </div>
@@ -155,7 +155,7 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>1️⃣ Token Impersonation (JuicyPotato / PrintSpoofer)</span>
           <span class="badge badge-green" style="margin-left:auto;margin-right:10px">Fácil</span>
           <span class="acc-icon">▼</span>
@@ -173,7 +173,7 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>2️⃣ Unquoted Service Path</span>
           <span class="badge badge-orange" style="margin-left:auto;margin-right:10px">Medio</span>
           <span class="acc-icon">▼</span>
@@ -193,7 +193,7 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>3️⃣ Weak Service Permissions (DACL Abuse)</span>
           <span class="badge badge-orange" style="margin-left:auto;margin-right:10px">Medio</span>
           <span class="acc-icon">▼</span>
@@ -211,7 +211,7 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>4️⃣ Kernel Exploits (WinPEAS / windows-exploit-suggester)</span>
           <span class="badge badge-red" style="margin-left:auto;margin-right:10px">Avanzado</span>
           <span class="acc-icon">▼</span>
@@ -229,7 +229,7 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>5️⃣ AlwaysInstallElevated</span>
           <span class="badge badge-green" style="margin-left:auto;margin-right:10px">Fácil</span>
           <span class="acc-icon">▼</span>
@@ -246,7 +246,7 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
       </div>
 
       <div class="accordion">
-        <div class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header">
           <span>6️⃣ SeBackupPrivilege / SeRestorePrivilege</span>
           <span class="badge badge-orange" style="margin-left:auto;margin-right:10px">Medio</span>
           <span class="acc-icon">▼</span>
@@ -274,18 +274,18 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
 
       <div class="card">
         <div style="font-weight:700; font-size:14px; margin-bottom:12px;">📜 Scripts de Enumeración</div>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>WinPEAS</strong> — El LinPEAS de Windows. Enumera TODO.</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>PowerUp</strong> — Módulo de PowerSploit para encontrar vectores.</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>windows-exploit-suggester</strong> — Mapea patches faltantes a exploits.</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>SharpUp</strong> — Versión C# de PowerUp, bypass AMSI más fácil.</span></label>
+        <label class="checklist-item"><input type="checkbox"><span><strong>WinPEAS</strong> — El LinPEAS de Windows. Enumera TODO.</span></label>
+        <label class="checklist-item"><input type="checkbox"><span><strong>PowerUp</strong> — Módulo de PowerSploit para encontrar vectores.</span></label>
+        <label class="checklist-item"><input type="checkbox"><span><strong>windows-exploit-suggester</strong> — Mapea patches faltantes a exploits.</span></label>
+        <label class="checklist-item"><input type="checkbox"><span><strong>SharpUp</strong> — Versión C# de PowerUp, bypass AMSI más fácil.</span></label>
       </div>
 
       <div class="card">
         <div style="font-weight:700; font-size:14px; margin-bottom:12px;">🎯 Binarios de Explotación</div>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>JuicyPotato</strong> — Abusa SeImpersonatePrivilege (Windows < 2019).</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>PrintSpoofer</strong> — Alternativa moderna a JuicyPotato.</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>GodPotato</strong> — Funciona en Windows Server 2019/2022.</span></label>
-        <label class="checklist-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('checked')"><span><strong>RoguePotato</strong> — Otra alternativa para impersonation.</span></label>
+        <label class="checklist-item"><input type="checkbox"><span><strong>JuicyPotato</strong> — Abusa SeImpersonatePrivilege (Windows < 2019).</span></label>
+        <label class="checklist-item"><input type="checkbox"><span><strong>PrintSpoofer</strong> — Alternativa moderna a JuicyPotato.</span></label>
+        <label class="checklist-item"><input type="checkbox"><span><strong>GodPotato</strong> — Funciona en Windows Server 2019/2022.</span></label>
+        <label class="checklist-item"><input type="checkbox"><span><strong>RoguePotato</strong> — Otra alternativa para impersonation.</span></label>
       </div>
 
       <div class="card">
@@ -325,10 +325,10 @@ SeChangeNotifyPrivilege       Bypass traverse checking       Enabled
 SeIncreaseWorkingSetPrivilege Increase a process working set Enabled</span>
           </div>
           <div class="card-desc" style="margin-top:12px"><strong>¿Qué haces ahora?</strong></div>
-          <button class="quiz-option btn-block" onclick="ctfNext(1, false, this)">Buscar unquoted service paths</button>
-          <button class="quiz-option btn-block" onclick="ctfNext(1, true, this)">Usar PrintSpoofer.exe para impersonar SYSTEM</button>
-          <button class="quiz-option btn-block" onclick="ctfNext(1, false, this)">Verificar AlwaysInstallElevated</button>
-          <button class="quiz-option btn-block" onclick="ctfNext(1, false, this)">Buscar archivos SAM y SYSTEM</button>
+          <button class="quiz-option btn-block" data-stage="1" data-correct="0">Buscar unquoted service paths</button>
+          <button class="quiz-option btn-block" data-stage="1" data-correct="1">Usar PrintSpoofer.exe para impersonar SYSTEM</button>
+          <button class="quiz-option btn-block" data-stage="1" data-correct="0">Verificar AlwaysInstallElevated</button>
+          <button class="quiz-option btn-block" data-stage="1" data-correct="0">Buscar archivos SAM y SYSTEM</button>
         </div>
       </div>
 
@@ -350,10 +350,10 @@ SeIncreaseWorkingSetPrivilege Increase a process working set Enabled</span>
 <span class="out">CTF{windows_impersonation_master}</span>
           </div>
           <div class="card-desc" style="margin-top:12px"><strong>Ahora busca persistencia. ¿Qué técnica es más sigilosa?</strong></div>
-          <button class="quiz-option btn-block" onclick="ctfNext(2, false, this)">Crear un nuevo usuario administrador</button>
-          <button class="quiz-option btn-block" onclick="ctfNext(2, true, this)">Agregar una clave de registro Run para ejecutar un reverse shell</button>
-          <button class="quiz-option btn-block" onclick="ctfNext(2, false, this)">Modificar un servicio existente</button>
-          <button class="quiz-option btn-block" onclick="ctfNext(2, false, this)">Instalar un rootkit en el kernel</button>
+          <button class="quiz-option btn-block" data-stage="2" data-correct="0">Crear un nuevo usuario administrador</button>
+          <button class="quiz-option btn-block" data-stage="2" data-correct="1">Agregar una clave de registro Run para ejecutar un reverse shell</button>
+          <button class="quiz-option btn-block" data-stage="2" data-correct="0">Modificar un servicio existente</button>
+          <button class="quiz-option btn-block" data-stage="2" data-correct="0">Instalar un rootkit en el kernel</button>
         </div>
       </div>
 
@@ -371,10 +371,10 @@ SeIncreaseWorkingSetPrivilege Increase a process working set Enabled</span>
 <span class="out">The operation completed successfully.</span>
           </div>
           <div class="card-desc" style="margin-top:12px"><strong>¿Cómo limpias tus huellas de forma ética?</strong></div>
-          <button class="quiz-option btn-block" onclick="ctfNext(3, false, this)">Borrar todos los logs de Event Viewer</button>
-          <button class="quiz-option btn-block" onclick="ctfNext(3, false, this)">Desactivar Windows Defender</button>
-          <button class="quiz-option btn-block" onclick="ctfNext(3, true, this)">Documentar todo en el reporte del pentest y no tocar logs</button>
-          <button class="quiz-option btn-block" onclick="ctfNext(3, false, this)">Formatear el disco</button>
+          <button class="quiz-option btn-block" data-stage="3" data-correct="0">Borrar todos los logs de Event Viewer</button>
+          <button class="quiz-option btn-block" data-stage="3" data-correct="0">Desactivar Windows Defender</button>
+          <button class="quiz-option btn-block" data-stage="3" data-correct="1">Documentar todo en el reporte del pentest y no tocar logs</button>
+          <button class="quiz-option btn-block" data-stage="3" data-correct="0">Formatear el disco</button>
         </div>
       </div>
 
@@ -392,7 +392,7 @@ SeIncreaseWorkingSetPrivilege Increase a process working set Enabled</span>
           <div style="margin-top:16px">
             <span class="badge badge-blue">CTF Completado</span>
           </div>
-          <button class="btn btn-primary" style="margin-top:16px" onclick="resetCTF()">🔄 Reiniciar Simulador</button>
+          <button class="btn btn-primary" style="margin-top:16px" data-action="reset-ctf">🔄 Reiniciar Simulador</button>
         </div>
       </div>
     </div>
@@ -407,42 +407,42 @@ SeIncreaseWorkingSetPrivilege Increase a process working set Enabled</span>
       <div id="quiz-container">
         <div class="card" id="q1">
           <div style="font-weight:700; font-size:14px; margin-bottom:12px;">1. ¿Qué privilegio permite usar JuicyPotato o PrintSpoofer?</div>
-          <button class="quiz-option btn-block" onclick="answerQuiz(1, 'a', false, this)">A. SeBackupPrivilege</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(1, 'b', true, this)">B. SeImpersonatePrivilege</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(1, 'c', false, this)">C. SeDebugPrivilege</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(1, 'd', false, this)">D. SeTakeOwnershipPrivilege</button>
+          <button class="quiz-option btn-block" data-q="1" data-correct="0">A. SeBackupPrivilege</button>
+          <button class="quiz-option btn-block" data-q="1" data-correct="1">B. SeImpersonatePrivilege</button>
+          <button class="quiz-option btn-block" data-q="1" data-correct="0">C. SeDebugPrivilege</button>
+          <button class="quiz-option btn-block" data-q="1" data-correct="0">D. SeTakeOwnershipPrivilege</button>
         </div>
 
         <div class="card" id="q2" style="opacity:0.35; pointer-events:none;">
           <div style="font-weight:700; font-size:14px; margin-bottom:12px;">2. ¿Qué problema crea un Unquoted Service Path como <code>C:\Program Files\App\service.exe</code>?</div>
-          <button class="quiz-option btn-block" onclick="answerQuiz(2, 'a', false, this)">A. El servicio no puede iniciar</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(2, 'b', true, this)">B. Windows intenta ejecutar <code>C:\Program.exe</code> primero</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(2, 'c', false, this)">C. Causa un buffer overflow</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(2, 'd', false, this)">D. Desactiva el firewall</button>
+          <button class="quiz-option btn-block" data-q="2" data-correct="0">A. El servicio no puede iniciar</button>
+          <button class="quiz-option btn-block" data-q="2" data-correct="1">B. Windows intenta ejecutar <code>C:\Program.exe</code> primero</button>
+          <button class="quiz-option btn-block" data-q="2" data-correct="0">C. Causa un buffer overflow</button>
+          <button class="quiz-option btn-block" data-q="2" data-correct="0">D. Desactiva el firewall</button>
         </div>
 
         <div class="card" id="q3" style="opacity:0.35; pointer-events:none;">
           <div style="font-weight:700; font-size:14px; margin-bottom:12px;">3. ¿Qué herramienta enumera automáticamente vectores de escalamiento en Windows?</div>
-          <button class="quiz-option btn-block" onclick="answerQuiz(3, 'a', false, this)">A. LinPEAS</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(3, 'b', true, this)">B. WinPEAS</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(3, 'c', false, this)">C. Nmap</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(3, 'd', false, this)">D. Burp Suite</button>
+          <button class="quiz-option btn-block" data-q="3" data-correct="0">A. LinPEAS</button>
+          <button class="quiz-option btn-block" data-q="3" data-correct="1">B. WinPEAS</button>
+          <button class="quiz-option btn-block" data-q="3" data-correct="0">C. Nmap</button>
+          <button class="quiz-option btn-block" data-q="3" data-correct="0">D. Burp Suite</button>
         </div>
 
         <div class="card" id="q4" style="opacity:0.35; pointer-events:none;">
           <div style="font-weight:700; font-size:14px; margin-bottom:12px;">4. ¿Qué registros necesitas extraer para crackear hashes locales?</div>
-          <button class="quiz-option btn-block" onclick="answerQuiz(4, 'a', false, this)">A. NTUSER.DAT y SOFTWARE</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(4, 'b', true, this)">B. SAM y SYSTEM</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(4, 'c', false, this)">C. SECURITY y DEFAULT</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(4, 'd', false, this)">D. COMPONENTS y BCD</button>
+          <button class="quiz-option btn-block" data-q="4" data-correct="0">A. NTUSER.DAT y SOFTWARE</button>
+          <button class="quiz-option btn-block" data-q="4" data-correct="1">B. SAM y SYSTEM</button>
+          <button class="quiz-option btn-block" data-q="4" data-correct="0">C. SECURITY y DEFAULT</button>
+          <button class="quiz-option btn-block" data-q="4" data-correct="0">D. COMPONENTS y BCD</button>
         </div>
 
         <div class="card" id="q5" style="opacity:0.35; pointer-events:none;">
           <div style="font-weight:700; font-size:14px; margin-bottom:12px;">5. ¿Qué significa que un servicio tenga <code>SERVICE_ALL_ACCESS</code> para Authenticated Users?</div>
-          <button class="quiz-option btn-block" onclick="answerQuiz(5, 'a', false, this)">A. Cualquier usuario puede ver el servicio</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(5, 'b', true, this)">B. Cualquier usuario autenticado puede modificar el servicio</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(5, 'c', false, this)">C. El servicio corre con privilegios mínimos</button>
-          <button class="quiz-option btn-block" onclick="answerQuiz(5, 'd', false, this)">D. El servicio está deshabilitado</button>
+          <button class="quiz-option btn-block" data-q="5" data-correct="0">A. Cualquier usuario puede ver el servicio</button>
+          <button class="quiz-option btn-block" data-q="5" data-correct="1">B. Cualquier usuario autenticado puede modificar el servicio</button>
+          <button class="quiz-option btn-block" data-q="5" data-correct="0">C. El servicio corre con privilegios mínimos</button>
+          <button class="quiz-option btn-block" data-q="5" data-correct="0">D. El servicio está deshabilitado</button>
         </div>
       </div>
 
@@ -451,7 +451,7 @@ SeIncreaseWorkingSetPrivilege Increase a process working set Enabled</span>
           <div class="result-emoji">🎓</div>
           <div class="result-title" id="quiz-score-text"></div>
           <div class="card-desc" id="quiz-feedback"></div>
-          <button class="btn btn-primary" style="margin-top:12px" onclick="resetQuiz()">Reiniciar Quiz</button>
+          <button class="btn btn-primary" style="margin-top:12px" data-action="reset-quiz">Reiniciar Quiz</button>
         </div>
       </div>
     </div>
@@ -463,97 +463,6 @@ SeIncreaseWorkingSetPrivilege Increase a process working set Enabled</span>
     </div>
   </div>
 
-  <script>
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      event.target.classList.add('active');
-      document.getElementById(tabId).classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    function toggleAcc(header) {
-      const body = header.nextElementSibling;
-      header.classList.toggle('open');
-      body.classList.toggle('open');
-    }
-    function ctfNext(stage, correct, btn) {
-      const parent = btn.parentElement;
-      const buttons = parent.querySelectorAll('.quiz-option');
-      buttons.forEach(b => { b.disabled = true; });
-      if (correct) {
-        btn.classList.add('correct');
-        setTimeout(() => {
-          document.getElementById('ctf-stage-' + stage).style.display = 'none';
-          document.getElementById('ctf-stage-' + (stage+1)).style.display = 'block';
-          document.getElementById('ctf-stage-' + (stage+1)).scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 900);
-      } else {
-        btn.classList.add('wrong');
-        parent.querySelectorAll('.quiz-option').forEach(b => {
-          if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
-        });
-        setTimeout(() => {
-          document.getElementById('ctf-stage-' + stage).style.display = 'none';
-          document.getElementById('ctf-stage-' + (stage+1)).style.display = 'block';
-          document.getElementById('ctf-stage-' + (stage+1)).scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 1600);
-      }
-    }
-    function resetCTF() {
-      for (let i = 0; i <= 3; i++) {
-        document.getElementById('ctf-stage-' + i).style.display = i === 0 ? 'block' : 'none';
-      }
-      document.querySelectorAll('#ctf .quiz-option').forEach(b => {
-        b.classList.remove('correct', 'wrong');
-        b.disabled = false;
-      });
-    }
-    let quizScore = 0;
-    function answerQuiz(q, ans, correct, btn) {
-      const parent = btn.parentElement;
-      const buttons = parent.querySelectorAll('.quiz-option');
-      buttons.forEach(b => { b.disabled = true; });
-      if (correct) {
-        btn.classList.add('correct');
-        quizScore++;
-      } else {
-        btn.classList.add('wrong');
-        buttons.forEach(b => {
-          if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
-        });
-      }
-      if (q < 5) {
-        setTimeout(() => {
-          const next = document.getElementById('q' + (q+1));
-          next.style.opacity = '1';
-          next.style.pointerEvents = 'auto';
-          next.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 700);
-      } else {
-        setTimeout(() => {
-          document.getElementById('quiz-result').style.display = 'block';
-          document.getElementById('quiz-score-text').textContent = 'Puntuación: ' + quizScore + '/5';
-          const feedback = quizScore === 5 ? '¡Perfecto! Dominas el escalamiento en Windows.' :
-                          quizScore >= 3 ? '¡Buen trabajo! Repasa las técnicas que fallaste.' :
-                          'Sigue practicando. Revisa los paneles de Fundamentos y Técnicas.';
-          document.getElementById('quiz-feedback').textContent = feedback;
-          document.getElementById('quiz-result').scrollIntoView({ behavior: 'smooth' });
-        }, 900);
-      }
-    }
-    function resetQuiz() {
-      quizScore = 0;
-      document.getElementById('quiz-result').style.display = 'none';
-      for (let i = 1; i <= 5; i++) {
-        const card = document.getElementById('q' + i);
-        card.style.opacity = i === 1 ? '1' : '0.35';
-        card.style.pointerEvents = i === 1 ? 'auto' : 'none';
-        card.querySelectorAll('.quiz-option').forEach(b => {
-          b.classList.remove('correct', 'wrong');
-          b.disabled = false;
-        });
-      }
-    }
-  </script>
+  <script src="assets/site.js?v=20261110" defer></script>
 </body>
 </html>
