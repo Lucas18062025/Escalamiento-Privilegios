@@ -28,36 +28,36 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>🛡️ Mitigación de Escalamiento de Privilegios</h1>
+      <h1><span aria-hidden="true">🛡️</span> Mitigación de Escalamiento de Privilegios</h1>
       <p>Guía defensiva: cómo proteger Linux y Windows contra post-explotación</p>
     </div>
 
-    <div class="nav">
-      <a href="index.html">🏠 Inicio</a>
-      <a href="index.html">🐧 Linux</a>
-      <a href="windows-privesc.html">🪟 Windows</a>
-      <a href="mitigation.html">🛡️ Mitigación</a>
-      <a href="labs.html">🧪 Laboratorios</a>
-    </div>
+    <nav class="nav" aria-label="Secciones">
+      <a href="index.html"><span aria-hidden="true">🏠</span> Inicio</a>
+      <a href="index.html"><span aria-hidden="true">🐧</span> Linux</a>
+      <a href="windows-privesc.html"><span aria-hidden="true">🪟</span> Windows</a>
+      <a href="mitigation.html" aria-current="page"><span aria-hidden="true">🛡️</span> Mitigación</a>
+      <a href="labs.html"><span aria-hidden="true">🧪</span> Laboratorios</a>
+    </nav>
 
     <div class="tabs">
-      <button class="tab active" data-tab="linux">🐧 Linux</button>
-      <button class="tab" data-tab="windows">🪟 Windows</button>
-      <button class="tab" data-tab="general">📋 General</button>
-      <button class="tab" data-tab="checklist">✅ Checklist</button>
+      <button class="tab active" data-tab="linux"><span aria-hidden="true">🐧</span> Linux</button>
+      <button class="tab" data-tab="windows"><span aria-hidden="true">🪟</span> Windows</button>
+      <button class="tab" data-tab="general"><span aria-hidden="true">📋</span> General</button>
+      <button class="tab" data-tab="checklist"><span aria-hidden="true">✅</span> Checklist</button>
     </div>
 
     <!-- LINUX MITIGATION -->
     <div id="linux" class="panel active">
       <div class="card">
-        <div class="card-title">🐧 Mitigaciones en Linux</div>
+        <h2 class="card-title"><span aria-hidden="true">🐧</span> Mitigaciones en Linux</h2>
         <div class="card-desc">Cada vector de ataque tiene una contramedida. Implementa estas configuraciones para reducir drásticamente la superficie de ataque.</div>
       </div>
 
       <div class="accordion">
         <div class="acc-header">
           <span><span class="severity sev-high"></span>Configuración de Sudo</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="card-desc">Restringe sudo al mínimo indispensable. Evita <code>NOPASSWD</code> y usa reglas granulares.</div>
@@ -76,7 +76,7 @@
       <div class="accordion">
         <div class="acc-header">
           <span><span class="severity sev-high"></span>Binarios SUID/SGID</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="card-desc">Minimiza los binarios con bit SUID. Usa capabilities granulares en su lugar.</div>
@@ -95,7 +95,7 @@
       <div class="accordion">
         <div class="acc-header">
           <span><span class="severity sev-med"></span>Kernel y Parches</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="card-desc">Mantén el kernel actualizado. Los exploits de kernel son comunes en CTFs y entornos desactualizados.</div>
@@ -112,7 +112,7 @@
       <div class="accordion">
         <div class="acc-header">
           <span><span class="severity sev-med"></span>Permisos de Archivos Críticos</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -132,7 +132,7 @@
       <div class="accordion">
         <div class="acc-header">
           <span><span class="severity sev-high"></span>Docker y Contenedores</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="card-desc">Nunca des grupo docker a usuarios no administradores. Es equivalente a root.</div>
@@ -151,14 +151,14 @@
     <!-- WINDOWS MITIGATION -->
     <div id="windows" class="panel">
       <div class="card">
-        <div class="card-title">🪟 Mitigaciones en Windows</div>
+        <h2 class="card-title"><span aria-hidden="true">🪟</span> Mitigaciones en Windows</h2>
         <div class="card-desc">Windows tiene vectores únicos. Estas configuraciones reducen la superficie de ataque significativamente.</div>
       </div>
 
       <div class="accordion">
         <div class="acc-header">
           <span><span class="severity sev-high"></span>Privilegios de Usuario</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="card-desc">Restringe privilegios peligrosos como SeImpersonatePrivilege para cuentas de servicio no confiables.</div>
@@ -176,7 +176,7 @@
       <div class="accordion">
         <div class="acc-header">
           <span><span class="severity sev-high"></span>Servicios: Rutas con Comillas</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="card-desc">Todas las rutas de servicios deben estar entre comillas dobles para prevenir Unquoted Service Path.</div>
@@ -193,7 +193,7 @@
       <div class="accordion">
         <div class="acc-header">
           <span><span class="severity sev-med"></span>Parches y Actualizaciones</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -209,7 +209,7 @@
       <div class="accordion">
         <div class="acc-header">
           <span><span class="severity sev-high"></span>AlwaysInstallElevated</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="card-desc">Esta configuración permite que cualquier usuario instale MSI con privilegios de SYSTEM. Debe estar deshabilitada.</div>
@@ -226,7 +226,7 @@
       <div class="accordion">
         <div class="acc-header">
           <span><span class="severity sev-med"></span>AppLocker / WDAC</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="card-desc">AppLocker o Windows Defender Application Control (WDAC) pueden prevenir la ejecución de binarios no autorizados.</div>
@@ -242,31 +242,31 @@
     <!-- GENERAL -->
     <div id="general" class="panel">
       <div class="card">
-        <div class="card-title">📋 Principios Generales de Defensa</div>
+        <h2 class="card-title"><span aria-hidden="true">📋</span> Principios Generales de Defensa</h2>
         <div class="card-desc">Estas prácticas aplican a cualquier sistema operativo y son la base de una postura defensiva sólida.</div>
       </div>
 
       <div class="grid-2">
         <div class="card">
-          <div class="card-title">🔒 Principio de Mínimo Privilegio</div>
+          <h2 class="card-title"><span aria-hidden="true">🔒</span> Principio de Mínimo Privilegio</h2>
           <div class="card-desc">Cada usuario, servicio y aplicación debe tener únicamente los permisos estrictamente necesarios para su función. Nada más.</div>
         </div>
         <div class="card">
-          <div class="card-title">📊 Segmentación de Red</div>
+          <h2 class="card-title"><span aria-hidden="true">📊</span> Segmentación de Red</h2>
           <div class="card-desc">Separa redes por función. Un compromiso en la DMZ no debería permitir acceso a la red interna crítica.</div>
         </div>
         <div class="card">
-          <div class="card-title">🔍 Logging y Monitoreo</div>
+          <h2 class="card-title"><span aria-hidden="true">🔍</span> Logging y Monitoreo</h2>
           <div class="card-desc">Centraliza logs de autenticación, ejecución de procesos, y cambios de permisos. Usa SIEM para correlacionar eventos.</div>
         </div>
         <div class="card">
-          <div class="card-title">🔄 Actualizaciones Automáticas</div>
+          <h2 class="card-title"><span aria-hidden="true">🔄</span> Actualizaciones Automáticas</h2>
           <div class="card-desc">Aplica parches de seguridad tan pronto como estén disponibles. Los exploits públicos aparecen días después del parche.</div>
         </div>
       </div>
 
       <div class="card">
-        <div class="card-title">🛡️ Estrategia de Defensa en Profundidad</div>
+        <h2 class="card-title"><span aria-hidden="true">🛡️</span> Estrategia de Defensa en Profundidad</h2>
         <ul class="num-list">
           <li><span class="num">1</span><strong>Perímetro:</strong> Firewall, WAF, IDS/IPS</li>
           <li><span class="num">2</span><strong>Red:</strong> VLANs, microsegmentación, Zero Trust</li>
@@ -281,12 +281,12 @@
     <!-- CHECKLIST -->
     <div id="checklist" class="panel">
       <div class="card">
-        <div class="card-title">✅ Checklist de Hardening</div>
+        <h2 class="card-title"><span aria-hidden="true">✅</span> Checklist de Hardening</h2>
         <div class="card-desc">Marca cada ítem que hayas implementado. Un sistema seguro debería tener todo marcado.</div>
       </div>
 
       <div class="card">
-        <div style="font-weight:700; font-size:14px; margin-bottom:12px;">🐧 Linux</div>
+        <div style="font-weight:700; font-size:14px; margin-bottom:12px;"><span aria-hidden="true">🐧</span> Linux</div>
         <label class="checklist-item"><input type="checkbox"><span>Sudo configurado sin NOPASSWD innecesario</span></label>
         <label class="checklist-item"><input type="checkbox"><span>Binarios SUID auditados y minimizados</span></label>
         <label class="checklist-item"><input type="checkbox"><span>Kernel actualizado con parches de seguridad</span></label>
@@ -300,7 +300,7 @@
       </div>
 
       <div class="card">
-        <div style="font-weight:700; font-size:14px; margin-bottom:12px;">🪟 Windows</div>
+        <div style="font-weight:700; font-size:14px; margin-bottom:12px;"><span aria-hidden="true">🪟</span> Windows</div>
         <label class="checklist-item"><input type="checkbox"><span>Parches de seguridad aplicados (WSUS/SCCM)</span></label>
         <label class="checklist-item"><input type="checkbox"><span>Privilegios de usuario auditados (SeImpersonate, etc.)</span></label>
         <label class="checklist-item"><input type="checkbox"><span>Rutas de servicios entre comillas dobles</span></label>
@@ -314,7 +314,7 @@
       </div>
 
       <div class="card">
-        <div style="font-weight:700; font-size:14px; margin-bottom:12px;">📋 General</div>
+        <div style="font-weight:700; font-size:14px; margin-bottom:12px;"><span aria-hidden="true">📋</span> General</div>
         <label class="checklist-item"><input type="checkbox"><span>MFA habilitado en todos los puntos de acceso</span></label>
         <label class="checklist-item"><input type="checkbox"><span>Pentesting interno o red team anual</span></label>
         <label class="checklist-item"><input type="checkbox"><span>Backup offline y plan de recuperación</span></label>
@@ -324,8 +324,8 @@
     </div>
 
     <div class="footer">
-      <p>Hecho con 💻 para la comunidad de ciberseguridad.</p>
-      <p style="margin-top:10px; font-size:11px; color:#555;">⚠️ Uso exclusivo para fines educativos y pentesting autorizado.</p>
+      <p>Hecho con <span aria-hidden="true">💻</span> para la comunidad de ciberseguridad.</p>
+      <p style="margin-top:10px; font-size:11px; color:#555;"><span aria-hidden="true">⚠️</span> Uso exclusivo para fines educativos y pentesting autorizado.</p>
     </div>
   </div>
   <script src="assets/site.js?v=20261110" defer></script>

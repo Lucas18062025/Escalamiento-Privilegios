@@ -28,23 +28,23 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>🐉 Escalamiento de Privilegios en Kali Linux</h1>
+      <h1><span aria-hidden="true">🐉</span> Escalamiento de Privilegios en Kali Linux</h1>
       <p>Guía interactiva completa — desde enumeración hasta root</p>
       <div class="badge-row">
         <span class="badge badge-green">✓ Educativo</span>
-        <span class="badge badge-orange">⚡ Pentesting</span>
-        <span class="badge badge-blue">🎮 CTF Simulador</span>
-        <span class="badge badge-red">⚠️ Solo uso autorizado</span>
+        <span class="badge badge-orange"><span aria-hidden="true">⚡</span> Pentesting</span>
+        <span class="badge badge-blue"><span aria-hidden="true">🎮</span> CTF Simulador</span>
+        <span class="badge badge-red"><span aria-hidden="true">⚠️</span> Solo uso autorizado</span>
       </div>
     </div>
 
-    <div class="nav">
-      <a href="index.html">🏠 Inicio</a>
-      <a href="index.html">🐧 Linux</a>
-      <a href="windows-privesc.html">🪟 Windows</a>
-      <a href="mitigation.html">🛡️ Mitigación</a>
-      <a href="labs.html">🧪 Laboratorios</a>
-    </div>
+    <nav class="nav" aria-label="Secciones">
+      <a href="index.html" aria-current="page"><span aria-hidden="true">🏠</span> Inicio</a>
+      <a href="index.html"><span aria-hidden="true">🐧</span> Linux</a>
+      <a href="windows-privesc.html"><span aria-hidden="true">🪟</span> Windows</a>
+      <a href="mitigation.html"><span aria-hidden="true">🛡️</span> Mitigación</a>
+      <a href="labs.html"><span aria-hidden="true">🧪</span> Laboratorios</a>
+    </nav>
 
     <div class="tabs">
       <button class="tab active" data-tab="basics">Fundamentos</button>
@@ -59,7 +59,7 @@
     <!-- FUNDAMENTOS -->
     <div id="basics" class="panel active">
       <div class="card">
-        <div class="card-title">💡 ¿Qué es el Escalamiento de Privilegios?</div>
+        <h2 class="card-title"><span aria-hidden="true">💡</span> ¿Qué es el Escalamiento de Privilegios?</h2>
         <div class="card-desc">
           Es la fase de <strong>post-explotación</strong> donde elevas tus permisos en un sistema comprometido, pasando de usuario limitado a <code>root</code> (Linux) o <code>SYSTEM</code> (Windows). Es una técnica legítima en <strong>pentesting autorizado</strong> para evaluar la profundidad de una brecha.
         </div>
@@ -67,19 +67,19 @@
 
       <div class="grid-2">
         <div class="card">
-          <div class="card-title">↗️ Vertical</div>
+          <h2 class="card-title"><span aria-hidden="true">↗️</span> Vertical</h2>
           <div class="card-desc">De usuario normal a administrador/root. Es el objetivo más común en pentesting.</div>
           <span class="tag" style="background:var(--positive-dim);color:var(--positive);border-color:rgba(0,212,170,0.3)">Común</span>
         </div>
         <div class="card">
-          <div class="card-title">↔️ Horizontal</div>
+          <h2 class="card-title"><span aria-hidden="true">↔️</span> Horizontal</h2>
           <div class="card-desc">De un usuario a otro con el mismo nivel de privilegios. Útil para pivotar entre cuentas.</div>
           <span class="tag" style="background:var(--warning-dim);color:var(--warning);border-color:rgba(245,166,35,0.3)">Táctico</span>
         </div>
       </div>
 
       <div class="card">
-        <div class="card-title">📋 Flujo de Trabajo Típico</div>
+        <h2 class="card-title"><span aria-hidden="true">📋</span> Flujo de Trabajo Típico</h2>
         <ul class="num-list">
           <li><span class="num">1</span> Compromiso inicial (shell como usuario limitado)</li>
           <li><span class="num">2</span> Enumeración del sistema y del entorno</li>
@@ -90,21 +90,21 @@
       </div>
 
       <div class="warning-box">
-        <strong>⚠️ Disclaimer Ético:</strong> Todo el contenido de esta guía es exclusivamente para fines educativos y pentesting autorizado. El acceso no autorizado a sistemas informáticos es un delito en la mayoría de las jurisdicciones. Practica solo en laboratorios propios, CTFs, o con permiso explícito por escrito.
+        <strong><span aria-hidden="true">⚠️</span> Disclaimer Ético:</strong> Todo el contenido de esta guía es exclusivamente para fines educativos y pentesting autorizado. El acceso no autorizado a sistemas informáticos es un delito en la mayoría de las jurisdicciones. Practica solo en laboratorios propios, CTFs, o con permiso explícito por escrito.
       </div>
     </div>
 
     <!-- ENUMERACIÓN -->
     <div id="enum" class="panel">
       <div class="card">
-        <div class="card-title">🔍 Enumeración del Sistema</div>
+        <h2 class="card-title"><span aria-hidden="true">🔍</span> Enumeración del Sistema</h2>
         <div class="card-desc">La enumeración es el 90% del escalamiento. Sin información, no hay exploit.</div>
       </div>
 
       <div class="accordion">
         <div class="acc-header">
-          <span>🖥️ Información del Sistema y Kernel</span>
-          <span class="acc-icon">▼</span>
+          <span><span aria-hidden="true">🖥️</span> Información del Sistema y Kernel</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -121,8 +121,8 @@
 
       <div class="accordion">
         <div class="acc-header">
-          <span>👤 Usuarios, Grupos y Permisos</span>
-          <span class="acc-icon">▼</span>
+          <span><span aria-hidden="true">👤</span> Usuarios, Grupos y Permisos</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -138,8 +138,8 @@
 
       <div class="accordion">
         <div class="acc-header">
-          <span>⚙️ Procesos, Servicios y Cron</span>
-          <span class="acc-icon">▼</span>
+          <span><span aria-hidden="true">⚙️</span> Procesos, Servicios y Cron</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -156,8 +156,8 @@
 
       <div class="accordion">
         <div class="acc-header">
-          <span>🔐 Archivos SUID, SGID y Sticky</span>
-          <span class="acc-icon">▼</span>
+          <span><span aria-hidden="true">🔐</span> Archivos SUID, SGID y Sticky</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -172,8 +172,8 @@
 
       <div class="accordion">
         <div class="acc-header">
-          <span>🌐 Red, Variables de Entorno y Capacidades</span>
-          <span class="acc-icon">▼</span>
+          <span><span aria-hidden="true">🌐</span> Red, Variables de Entorno y Capacidades</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -190,15 +190,15 @@
     <!-- TÉCNICAS -->
     <div id="techniques" class="panel">
       <div class="card">
-        <div class="card-title">🎯 Técnicas Principales de Escalamiento</div>
+        <h2 class="card-title"><span aria-hidden="true">🎯</span> Técnicas Principales de Escalamiento</h2>
         <div class="card-desc">Selecciona una técnica para ver el exploit paso a paso.</div>
       </div>
 
       <div class="accordion">
         <div class="acc-header">
-          <span>1️⃣ Sudo Abuse / GTFOBins</span>
+          <span><span aria-hidden="true">1️⃣</span> Sudo Abuse / GTFOBins</span>
           <span class="badge badge-green" style="margin-left:auto;margin-right:10px">Fácil</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="card-desc">Si <code>sudo -l</code> muestra que puedes ejecutar un binario como root sin contraseña:</div>
@@ -215,9 +215,9 @@
 
       <div class="accordion">
         <div class="acc-header">
-          <span>2️⃣ SUID Binaries</span>
+          <span><span aria-hidden="true">2️⃣</span> SUID Binaries</span>
           <span class="badge badge-orange" style="margin-left:auto;margin-right:10px">Medio</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="card-desc">Binarios con bit SUID que ejecutan como root:</div>
@@ -234,9 +234,9 @@
 
       <div class="accordion">
         <div class="acc-header">
-          <span>3️⃣ Kernel Exploits</span>
+          <span><span aria-hidden="true">3️⃣</span> Kernel Exploits</span>
           <span class="badge badge-red" style="margin-left:auto;margin-right:10px">Avanzado</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="card-desc">Cuando el kernel es antiguo y tiene CVEs conocidas:</div>
@@ -251,15 +251,15 @@
 <span class="root"># whoami</span>
 <span class="out">root</span>
           </div>
-          <div class="card-desc" style="margin-top:10px">⚠️ Compilar en el target puede fallar. Trae binarios precompilados o compila estáticamente: <code>gcc -static</code>.</div>
+          <div class="card-desc" style="margin-top:10px"><span aria-hidden="true">⚠️</span> Compilar en el target puede fallar. Trae binarios precompilados o compila estáticamente: <code>gcc -static</code>.</div>
         </div>
       </div>
 
       <div class="accordion">
         <div class="acc-header">
-          <span>4️⃣ PATH Hijacking</span>
+          <span><span aria-hidden="true">4️⃣</span> PATH Hijacking</span>
           <span class="badge badge-orange" style="margin-left:auto;margin-right:10px">Medio</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="card-desc">Si un script root ejecuta un comando sin ruta absoluta:</div>
@@ -280,9 +280,9 @@ tar czf /backups/user.tar.gz *</span>
 
       <div class="accordion">
         <div class="acc-header">
-          <span>5️⃣ Capabilities (cap_setuid)</span>
+          <span><span aria-hidden="true">5️⃣</span> Capabilities (cap_setuid)</span>
           <span class="badge badge-orange" style="margin-left:auto;margin-right:10px">Medio</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -297,9 +297,9 @@ tar czf /backups/user.tar.gz *</span>
 
       <div class="accordion">
         <div class="acc-header">
-          <span>6️⃣ Docker / LXC Escape</span>
+          <span><span aria-hidden="true">6️⃣</span> Docker / LXC Escape</span>
           <span class="badge badge-red" style="margin-left:auto;margin-right:10px">Avanzado</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -315,9 +315,9 @@ tar czf /backups/user.tar.gz *</span>
 
       <div class="accordion">
         <div class="acc-header">
-          <span>7️⃣ Writable /etc/passwd o /etc/sudoers</span>
+          <span><span aria-hidden="true">7️⃣</span> Writable /etc/passwd o /etc/sudoers</span>
           <span class="badge badge-green" style="margin-left:auto;margin-right:10px">Fácil</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -335,12 +335,12 @@ tar czf /backups/user.tar.gz *</span>
     <!-- HERRAMIENTAS -->
     <div id="tools" class="panel">
       <div class="card">
-        <div class="card-title">🛠️ Arsenal de Herramientas</div>
+        <h2 class="card-title"><span aria-hidden="true">🛠️</span> Arsenal de Herramientas</h2>
         <div class="card-desc">Marca las que ya dominas. Las esenciales vienen preinstaladas en Kali.</div>
       </div>
 
       <div class="card">
-        <div style="font-weight:700; font-size:14px; margin-bottom:12px;">📜 Scripts de Enumeración Automática</div>
+        <div style="font-weight:700; font-size:14px; margin-bottom:12px;"><span aria-hidden="true">📜</span> Scripts de Enumeración Automática</div>
         <label class="checklist-item"><input type="checkbox"><span><strong>LinPEAS</strong> — El más completo. Enumera TODO.</span></label>
         <label class="checklist-item"><input type="checkbox"><span><strong>LinEnum</strong> — Alternativa ligera y rápida.</span></label>
         <label class="checklist-item"><input type="checkbox"><span><strong>linux-exploit-suggester</strong> — Sugiere exploits para el kernel.</span></label>
@@ -348,14 +348,14 @@ tar czf /backups/user.tar.gz *</span>
       </div>
 
       <div class="card">
-        <div style="font-weight:700; font-size:14px; margin-bottom:12px;">📚 Bases de Datos y Referencias</div>
+        <div style="font-weight:700; font-size:14px; margin-bottom:12px;"><span aria-hidden="true">📚</span> Bases de Datos y Referencias</div>
         <label class="checklist-item"><input type="checkbox"><span><strong>GTFOBins</strong> — Binarios SUID/sudo abusables.</span></label>
         <label class="checklist-item"><input type="checkbox"><span><strong>Exploit-DB / searchsploit</strong> — Búsqueda local de exploits.</span></label>
         <label class="checklist-item"><input type="checkbox"><span><strong>PayloadsAllTheThings</strong> — Cheatsheets de todo tipo.</span></label>
       </div>
 
       <div class="card">
-        <div style="font-weight:700; font-size:14px; margin-bottom:12px;">💻 Comandos Nativos Esenciales</div>
+        <div style="font-weight:700; font-size:14px; margin-bottom:12px;"><span aria-hidden="true">💻</span> Comandos Nativos Esenciales</div>
         <div class="terminal">
 <span class="cmd">$ find / -perm -4000 -type f 2>/dev/null</span>
 <span class="cmd">$ sudo -l</span>
@@ -369,7 +369,7 @@ tar czf /backups/user.tar.gz *</span>
     <!-- SIMULADOR CTF -->
     <div id="ctf" class="panel">
       <div class="card">
-        <div class="card-title">🎮 Simulador: Escena del Crimen</div>
+        <h2 class="card-title"><span aria-hidden="true">🎮</span> Simulador: Escena del Crimen</h2>
         <div class="card-desc">Tienes una shell como <code>www-data</code>. Analiza la evidencia y escoge el vector correcto para llegar a root.</div>
       </div>
 
@@ -381,7 +381,7 @@ tar czf /backups/user.tar.gz *</span>
           <div class="progress-step"></div>
         </div>
         <div class="card">
-          <div class="card-title">🔍 Paso 1: Reconocimiento</div>
+          <h2 class="card-title"><span aria-hidden="true">🔍</span> Paso 1: Reconocimiento</h2>
           <div class="terminal">
 <span class="cmd">$ whoami</span>
 <span class="out">www-data</span>
@@ -409,7 +409,7 @@ User www-data may run the following commands on target:
           <div class="progress-step"></div>
         </div>
         <div class="card">
-          <div class="card-title">✅ ¡Correcto! Shell como root</div>
+          <h2 class="card-title"><span aria-hidden="true">✅</span> ¡Correcto! Shell como root</h2>
           <div class="terminal">
 <span class="cmd">$ sudo awk 'BEGIN {system("/bin/bash")}'</span>
 <span class="root"># whoami</span>
@@ -433,7 +433,7 @@ User www-data may run the following commands on target:
           <div class="progress-step"></div>
         </div>
         <div class="card">
-          <div class="card-title">✅ Persistencia establecida</div>
+          <h2 class="card-title"><span aria-hidden="true">✅</span> Persistencia establecida</h2>
           <div class="terminal">
 <span class="root"># mkdir -p /root/.ssh && echo 'ssh-rsa AAAA...' >> /root/.ssh/authorized_keys</span>
 <span class="root"># chmod 600 /root/.ssh/authorized_keys</span>
@@ -454,13 +454,13 @@ User www-data may run the following commands on target:
           <div class="progress-step done"></div>
         </div>
         <div class="card result-card">
-          <div class="result-emoji">🏆</div>
+          <div class="result-emoji"><span aria-hidden="true">🏆</span></div>
           <div class="result-title">¡Misión Completada!</div>
           <div class="card-desc">Has escalado privilegios, establecido persistencia y tomado la decisión correcta sobre los logs. Eres un pentester con criterio.</div>
           <div style="margin-top:16px">
             <span class="badge badge-blue">CTF Completado</span>
           </div>
-          <button class="btn btn-primary" style="margin-top:16px" data-action="reset-ctf">🔄 Reiniciar Simulador</button>
+          <button class="btn btn-primary" style="margin-top:16px" data-action="reset-ctf"><span aria-hidden="true">🔄</span> Reiniciar Simulador</button>
         </div>
       </div>
     </div>
@@ -468,7 +468,7 @@ User www-data may run the following commands on target:
     <!-- QUIZ -->
     <div id="quiz" class="panel">
       <div class="card">
-        <div class="card-title">🧠 Quiz Rápido</div>
+        <h2 class="card-title"><span aria-hidden="true">🧠</span> Quiz Rápido</h2>
         <div class="card-desc">5 preguntas para validar tu conocimiento.</div>
       </div>
 
@@ -516,7 +516,7 @@ User www-data may run the following commands on target:
 
       <div id="quiz-result" style="display:none; margin-top:16px;">
         <div class="card result-card">
-          <div class="result-emoji">🎓</div>
+          <div class="result-emoji"><span aria-hidden="true">🎓</span></div>
           <div class="result-title" id="quiz-score-text"></div>
           <div class="card-desc" id="quiz-feedback"></div>
           <button class="btn btn-primary" style="margin-top:12px" data-action="reset-quiz">Reiniciar Quiz</button>
@@ -527,14 +527,14 @@ User www-data may run the following commands on target:
     <!-- CHEATSHEET -->
     <div id="cheatsheet" class="panel">
       <div class="card">
-        <div class="card-title">📋 Cheatsheet Rápido</div>
+        <h2 class="card-title"><span aria-hidden="true">📋</span> Cheatsheet Rápido</h2>
         <div class="card-desc">Comandos esenciales para copiar y pegar durante un pentest.</div>
       </div>
 
       <div class="accordion">
         <div class="acc-header open">
-          <span>🖥️ Sistema y Kernel</span>
-          <span class="acc-icon">▼</span>
+          <span><span aria-hidden="true">🖥️</span> Sistema y Kernel</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body open">
           <div class="terminal">
@@ -550,8 +550,8 @@ User www-data may run the following commands on target:
 
       <div class="accordion">
         <div class="acc-header">
-          <span>👤 Usuarios y Permisos</span>
-          <span class="acc-icon">▼</span>
+          <span><span aria-hidden="true">👤</span> Usuarios y Permisos</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -566,8 +566,8 @@ User www-data may run the following commands on target:
 
       <div class="accordion">
         <div class="acc-header">
-          <span>🔐 SUID, SGID, Capabilities</span>
-          <span class="acc-icon">▼</span>
+          <span><span aria-hidden="true">🔐</span> SUID, SGID, Capabilities</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -581,8 +581,8 @@ User www-data may run the following commands on target:
 
       <div class="accordion">
         <div class="acc-header">
-          <span>⚙️ Procesos y Servicios</span>
-          <span class="acc-icon">▼</span>
+          <span><span aria-hidden="true">⚙️</span> Procesos y Servicios</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -597,8 +597,8 @@ User www-data may run the following commands on target:
 
       <div class="accordion">
         <div class="acc-header">
-          <span>⏰ Cron y Tareas Programadas</span>
-          <span class="acc-icon">▼</span>
+          <span><span aria-hidden="true">⏰</span> Cron y Tareas Programadas</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -613,8 +613,8 @@ User www-data may run the following commands on target:
 
       <div class="accordion">
         <div class="acc-header">
-          <span>🌐 Red y Conectividad</span>
-          <span class="acc-icon">▼</span>
+          <span><span aria-hidden="true">🌐</span> Red y Conectividad</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -629,8 +629,8 @@ User www-data may run the following commands on target:
 
       <div class="accordion">
         <div class="acc-header">
-          <span>📦 Docker y Contenedores</span>
-          <span class="acc-icon">▼</span>
+          <span><span aria-hidden="true">📦</span> Docker y Contenedores</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -645,14 +645,14 @@ User www-data may run the following commands on target:
     </div>
 
     <div class="footer">
-      <p>Hecho con 💻 para la comunidad de ciberseguridad.</p>
+      <p>Hecho con <span aria-hidden="true">💻</span> para la comunidad de ciberseguridad.</p>
       <p style="margin-top:6px">Recursos: <a href="https://gtfobins.github.io" target="_blank">GTFOBins</a> · <a href="https://www.exploit-db.com" target="_blank">Exploit-DB</a> · <a href="https://github.com/carlospolop/PEASS-ng" target="_blank">LinPEAS</a></p>
-      <p style="margin-top:10px; font-size:11px; color:#555;">⚠️ Uso exclusivo para fines educativos y pentesting autorizado.</p>
+      <p style="margin-top:10px; font-size:11px; color:#555;"><span aria-hidden="true">⚠️</span> Uso exclusivo para fines educativos y pentesting autorizado.</p>
 
       <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border);">
         <p style="font-weight:700; color:var(--text-primary); font-size:13px;">Lucas Villagra</p>
         <p style="margin-top:2px; font-size:12px;">Cybersecurity Analyst | Ethical Hacker | SOC Analyst</p>
-        <p style="margin-top:2px; font-size:12px;">📍 San Miguel de Tucumán, Argentina</p>
+        <p style="margin-top:2px; font-size:12px;"><span aria-hidden="true">📍</span> San Miguel de Tucumán, Argentina</p>
         <div style="margin-top:10px; display:flex; justify-content:center; gap:6px; flex-wrap:wrap;">
           <a href="https://linkedin.com/in/lucas-villagra-cybersecurity" target="_blank"><img src="https://img.shields.io/badge/LinkedIn-lucas--villagra--cybersecurity-0A66C2?style=flat&logo=linkedin" alt="LinkedIn"></a>
           <a href="https://github.com/Lucas18062025" target="_blank"><img src="https://img.shields.io/badge/GitHub-Lucas18062025-181717?style=flat&logo=github" alt="GitHub"></a>
@@ -660,6 +660,7 @@ User www-data may run the following commands on target:
         </div>
       </div>
     </div>
+  </div>
   <script src="assets/site.js?v=20261110" defer></script>
 </body>
 </html>

