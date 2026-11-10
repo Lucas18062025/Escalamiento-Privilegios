@@ -26,8 +26,13 @@
   }
 
   /* ---------- Simulador CTF ---------- */
-  function ctfNext(stage, correct, btn) {
+  /* El stage "actual" se deriva del contenedor #ctf-stage-N. El markup original
+     pasaba un indice adelantado (ctfNext(1, ...) en la etapa 0), lo que saltaba
+     la pantalla intermedia de "Shell como root". data-stage queda como fallback. */
+  function ctfNext(currentStage, correct, btn) {
     var parent = btn.parentElement;
+    var box = btn.closest('[id^="ctf-stage-"]');
+    var stage = box ? Number(box.id.replace('ctf-stage-', '')) : currentStage;
     parent.querySelectorAll('.quiz-option').forEach(function (b) { b.disabled = true; });
 
     if (correct) {
@@ -40,9 +45,8 @@
     }
 
     window.setTimeout(function () {
-      var current = document.getElementById('ctf-stage-' + stage);
       var next = document.getElementById('ctf-stage-' + (stage + 1));
-      if (current) current.style.display = 'none';
+      if (box) box.style.display = 'none';
       if (next) {
         next.style.display = 'block';
         next.scrollIntoView({ behavior: 'smooth', block: 'start' });
