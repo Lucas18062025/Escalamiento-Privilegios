@@ -15,6 +15,9 @@
       t.setAttribute('aria-selected', active ? 'true' : 'false');
       t.setAttribute('tabindex', active ? '0' : '-1');
     });
+    document.querySelectorAll('.sidebar-nav a').forEach(function (a) {
+      a.classList.toggle('active', a.dataset.tabLink === tabId);
+    });
     document.querySelectorAll('.panel').forEach(function (p) {
       p.classList.toggle('active', p.id === tabId);
     });
@@ -127,6 +130,40 @@
     }
   }
 
+  /* ---------- Bloques de código con botón copiar ---------- */
+  function initCodeBlocks() {
+    var blocks = document.querySelectorAll('pre, .terminal');
+    blocks.forEach(function (el) {
+      if (el.closest('.code-block')) return;
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block';
+      var label = document.createElement('div');
+      label.className = 'code-label';
+      var ctx = el.classList.contains('terminal') ? 'terminal' : 'comando';
+      label.innerHTML = '<span>' + ctx + '</span>';
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copiar';
+      btn.setAttribute('aria-label', 'Copiar comando');
+      btn.addEventListener('click', function () {
+        var text = el.innerText;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            btn.textContent = 'Copiado';
+            btn.classList.add('copied');
+            window.setTimeout(function () { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 1500);
+          });
+        }
+      });
+      label.appendChild(btn);
+      el.parentNode.insertBefore(wrapper, el);
+      wrapper.appendChild(label);
+      wrapper.appendChild(el);
+    });
+  }
+  initCodeBlocks();
+
   /* ---------- Inicialización ARIA tabs ---------- */
   document.querySelectorAll('.tab').forEach(function (t) {
     t.setAttribute('role', 'tab');
@@ -155,6 +192,9 @@
 
   /* ---------- Delegación de eventos ---------- */
   document.addEventListener('click', function (event) {
+    var side = event.target.closest('[data-tab-link]');
+    if (side && side.dataset.tabLink) { switchTab(side.dataset.tabLink); return; }
+
     var tab = event.target.closest('.tab');
     if (tab && tab.dataset.tab) { switchTab(tab.dataset.tab); return; }
 
