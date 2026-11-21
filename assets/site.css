@@ -246,3 +246,127 @@ body {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }
+
+/* === Accesibilidad: skip link y foco visible === */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 8px;
+  z-index: 1000;
+  padding: 8px 12px;
+  background: #22e0b8;
+  color: #0f0f0f;
+  border-radius: 6px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.skip-link:focus { left: 8px; }
+*:focus-visible { outline: 2px solid #22e0b8; outline-offset: 2px; }
+
+/* === Mejoras visuales Fase B === */
+pre, code {
+  font-family: Consolas, 'Cascadia Code', monospace;
+  font-size: 0.92em;
+}
+pre {
+  background: #0b1210;
+  border: 1px solid #1f3a33;
+  border-radius: 8px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+.tab {
+  transition: background-color 120ms ease, color 120ms ease;
+}
+.btn-block {
+  transition: transform 80ms ease, box-shadow 120ms ease;
+}
+.btn-block:hover {
+  transform: translateY(-1px);
+}
+
+/* === Fase B: Rediseño visual integral === */
+:root {
+  --bg: #0f1312;
+  --surface: #151b19;
+  --surface-2: #1c2421;
+  --accent: #22e0b8;
+  --text: #e6f1ed;
+  --muted: #a7b8b2;
+  --border: #2a3a35;
+  --radius: 10px;
+  --space-1: 8px;
+  --space-2: 12px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+h1, h2, h3 {
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-2);
+}
+
+h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
+h2 { font-size: clamp(1.4rem, 3vw, 2rem); border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+h3 { font-size: 1.15rem; color: var(--accent); }
+
+.container { max-width: 1100px; margin: 0 auto; padding: var(--space-4); }
+
+.card, .panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-3);
+  margin-bottom: var(--space-3);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+}
+
+.tab {
+  background: var(--surface-2);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  margin-right: 6px;
+  cursor: pointer;
+}
+.tab.active {
+  background: var(--accent);
+  color: #0f1312;
+  border-color: var(--accent);
+  font-weight: 700;
+}
+
+pre, code { border-radius: 8px; }
+pre { background: #0a0f0d; border: 1px solid var(--border); padding: var(--space-3); }
+
+.warning, .note {
+  border-left: 4px solid var(--accent);
+  background: var(--surface-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: 6px;
+  margin: var(--space-2) 0;
+}
+
+@media (max-width: 768px) {
+  .container { padding: var(--space-2); }
+  .tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tab { flex: 1 1 auto; text-align: center; }
+  pre { font-size: 0.85em; }
+}
+
+@media (max-width: 480px) {
+  body { font-size: 15px; }
+  h1 { font-size: 1.6rem; }
+}

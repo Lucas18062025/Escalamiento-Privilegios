@@ -10,7 +10,10 @@
   /* ---------- Tabs ---------- */
   function switchTab(tabId) {
     document.querySelectorAll('.tab').forEach(function (t) {
-      t.classList.toggle('active', t.dataset.tab === tabId);
+      var active = t.dataset.tab === tabId;
+      t.classList.toggle('active', active);
+      t.setAttribute('aria-selected', active ? 'true' : 'false');
+      t.setAttribute('tabindex', active ? '0' : '-1');
     });
     document.querySelectorAll('.panel').forEach(function (p) {
       p.classList.toggle('active', p.id === tabId);
@@ -122,6 +125,32 @@
         b.disabled = false;
       });
     }
+  }
+
+  /* ---------- Inicialización ARIA tabs ---------- */
+  document.querySelectorAll('.tab').forEach(function (t) {
+    t.setAttribute('role', 'tab');
+    if (!t.hasAttribute('aria-selected')) t.setAttribute('aria-selected', t.classList.contains('active') ? 'true' : 'false');
+    if (!t.hasAttribute('tabindex')) t.setAttribute('tabindex', t.classList.contains('active') ? '0' : '-1');
+  });
+  var tablist = document.querySelector('.tabs');
+  if (tablist) {
+    tablist.setAttribute('role', 'tablist');
+    tablist.addEventListener('keydown', function (e) {
+      var tabs = Array.prototype.slice.call(tablist.querySelectorAll('.tab'));
+      var idx = tabs.indexOf(document.activeElement);
+      if (idx < 0) return;
+      var next = -1;
+      if (e.key === 'ArrowRight') next = (idx + 1) % tabs.length;
+      else if (e.key === 'ArrowLeft') next = (idx - 1 + tabs.length) % tabs.length;
+      else if (e.key === 'Home') next = 0;
+      else if (e.key === 'End') next = tabs.length - 1;
+      if (next >= 0) {
+        e.preventDefault();
+        tabs[next].focus();
+        if (tabs[next].dataset.tab) switchTab(tabs[next].dataset.tab);
+      }
+    });
   }
 
   /* ---------- Delegación de eventos ---------- */
