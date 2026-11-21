@@ -23,25 +23,31 @@
   <meta name="twitter:title" content="Escalamiento de Privilegios en Kali Linux - Guía Interactiva">
   <meta name="twitter:description" content="Guía interactiva completa para aprender, entender y practicar el escalamiento de privilegios en Kali Linux. Incluye simulador CTF, quiz y cheatsheets.">
   <meta name="twitter:image" content="https://escalamiento-privilegios.lucaslean1806.workers.dev/assets/og.png">
-  <link rel="stylesheet" href="assets/site.css?v=20261122">
+  <link rel="stylesheet" href="assets/site.css?v=20261123">
 </head>
 <body>
 <a class="skip-link" href="#enum">Saltar al contenido principal</a>
   <div class="container">
     <div class="hero">
-      <span class="badge badge-blue">Nivel · Intermedio</span>
-      <h1 class="hero-title"><span aria-hidden="true">🐉</span> Escalamiento de Privilegios</h1>
-      <p class="hero-subtitle">Guía técnica interactiva de post-explotación: enumeración, vectores de escalamiento, simulador CTF, quiz y cheatsheets. Documentación precisa para pentesting autorizado.</p>
+      <div class="hero-eyebrow">Documentación técnica · Post-explotación</div>
+      <h1 class="hero-title">Escalamiento de Privilegios</h1>
+      <p class="hero-subtitle">Guía editorial de post-explotación en Linux y Windows: enumeración, vectores de escalamiento, simulador CTF y cheatsheets. Precisión técnica para pentesting autorizado.</p>
       <div class="hero-ctas">
         <a class="btn btn-primary" href="#enum">Explorar la guía</a>
         <a class="btn" href="labs">Acceder a laboratorios</a>
       </div>
+      <div class="hero-specs">
+        <span>Linux · Windows</span>
+        <span>Enumeración</span>
+        <span>CTF · Quiz</span>
+        <span>Uso autorizado</span>
+      </div>
       <div class="hero-modules">
-        <div class="hero-module"><div class="label">Linux</div><div class="name">Enumeración</div></div>
-        <div class="hero-module"><div class="label">Vectores</div><div class="name">Técnicas</div></div>
-        <div class="hero-module"><div class="label">Práctica</div><div class="name">Simulador CTF</div></div>
-        <div class="hero-module"><div class="label">Evaluación</div><div class="name">Quiz</div></div>
-        <div class="hero-module"><div class="label">Referencia</div><div class="name">Cheatsheet</div></div>
+        <div class="hero-module"><div class="label">Módulo 01</div><div class="name">Enumeración</div></div>
+        <div class="hero-module"><div class="label">Módulo 02</div><div class="name">Técnicas</div></div>
+        <div class="hero-module"><div class="label">Módulo 03</div><div class="name">Simulador CTF</div></div>
+        <div class="hero-module"><div class="label">Módulo 04</div><div class="name">Quiz</div></div>
+        <div class="hero-module"><div class="label">Módulo 05</div><div class="name">Cheatsheet</div></div>
       </div>
     </div>
 
@@ -53,6 +59,20 @@
       <a href="labs"><span aria-hidden="true">🧪</span> Laboratorios</a>
     </nav>
 
+    <div class="layout">
+      <aside class="sidebar" aria-label="Índice de la guía">
+        <div class="sidebar-title">Índice</div>
+        <nav class="sidebar-nav">
+          <a href="#basics" data-tab-link="basics" class="active">Fundamentos</a>
+          <a href="#enum" data-tab-link="enum">Enumeración</a>
+          <a href="#techniques" data-tab-link="techniques">Técnicas</a>
+          <a href="#tools" data-tab-link="tools">Herramientas</a>
+          <a href="#ctf" data-tab-link="ctf">Simulador CTF</a>
+          <a href="#quiz" data-tab-link="quiz">Quiz</a>
+          <a href="#cheatsheet" data-tab-link="cheatsheet">Cheatsheet</a>
+        </nav>
+      </aside>
+      <div class="content">
     <div class="tabs" role="tablist">
       <button class="tab active" data-tab="basics" aria-selected="true" tabindex="0">Fundamentos</button>
       <button class="tab" data-tab="enum">Enumeración</button>
@@ -649,6 +669,7 @@ User www-data may run the following commands on target:
           </div>
         </div>
       </div>
+      </div>
     </div>
 
     <div class="footer">
@@ -668,6 +689,7 @@ User www-data may run the following commands on target:
       </div>
     </div>
   </div>
-  <script src="assets/site.js?v=20261122" defer></script>
+  </div>
+  <script src="assets/site.js?v=20261123" defer></script>
 </body>
 </html>

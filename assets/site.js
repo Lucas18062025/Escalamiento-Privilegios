@@ -15,6 +15,9 @@
       t.setAttribute('aria-selected', active ? 'true' : 'false');
       t.setAttribute('tabindex', active ? '0' : '-1');
     });
+    document.querySelectorAll('.sidebar-nav a').forEach(function (a) {
+      a.classList.toggle('active', a.dataset.tabLink === tabId);
+    });
     document.querySelectorAll('.panel').forEach(function (p) {
       p.classList.toggle('active', p.id === tabId);
     });
@@ -189,6 +192,9 @@
 
   /* ---------- Delegación de eventos ---------- */
   document.addEventListener('click', function (event) {
+    var side = event.target.closest('[data-tab-link]');
+    if (side && side.dataset.tabLink) { switchTab(side.dataset.tabLink); return; }
+
     var tab = event.target.closest('.tab');
     if (tab && tab.dataset.tab) { switchTab(tab.dataset.tab); return; }
 
